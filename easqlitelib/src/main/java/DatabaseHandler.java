@@ -9,12 +9,15 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EaSQLite extends SQLiteOpenHelper {
+public class DatabaseHandler extends SQLiteOpenHelper {
     //Database Version
     private static final int DATABASE_VERSION = 3;
     private static String DATABASE_NAME;
+    private static String CREATE_TIMER_TABLE;
     public EaSQLite(Context context, String name){
     	DATABASE_NAME = name;
+    	CREATE_TIMER_TABLE = "CREATE TABLE"+  name  +
+                " (id INTEGER PRIMARY KEY AUTOINCREMENT) "
     	super(context, name, null, DATABASE_VERSION);
     }
     @Override
@@ -29,5 +32,8 @@ public class EaSQLite extends SQLiteOpenHelper {
 
         // create fresh tasks table
         this.onCreate(db);
+    }
+    public boolean addColumn(String name){
+    	
     }
 }
