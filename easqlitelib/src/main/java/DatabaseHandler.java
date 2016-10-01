@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -32,9 +33,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    public boolean addRow(String tableName, Object[] entries) {
-
+    public boolean addRow(String tableName, Pair<String, String>[] entries) {
+        ContentValues cv = new ContentValues();
+        SQLiteDatabase db = this.getReadableDatabase();
+        for (Pair<String, String> p : entries) {
+            cv.put(p.first, p.second);
+        }
+        db.insert(tableName, null, cv);
+        return true;
     }
+
     public boolean addColumn(String name){
     	
     }
