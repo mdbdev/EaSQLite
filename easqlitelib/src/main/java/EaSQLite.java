@@ -14,8 +14,8 @@ public class EaSQLite extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
     private static String DATABASE_NAME;
     public EaSQLite(Context context, String name){
+        super(context, name, null, DATABASE_VERSION);
     	DATABASE_NAME = name;
-    	super(context, name, null, DATABASE_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -29,5 +29,9 @@ public class EaSQLite extends SQLiteOpenHelper {
 
         // create fresh tasks table
         this.onCreate(db);
+    }
+
+    public boolean addRow(String tableName, Object[] entries) {
+
     }
 }
