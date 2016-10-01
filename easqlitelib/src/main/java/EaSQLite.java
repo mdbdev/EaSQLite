@@ -17,4 +17,17 @@ public class EaSQLite extends SQLiteOpenHelper {
     	DATABASE_NAME = name;
     	super(context, name, null, DATABASE_VERSION);
     }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CREATE_TIMER_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // Drop older tasks table if existed
+        db.execSQL("DROP TABLE IF EXISTS tasks");
+
+        // create fresh tasks table
+        this.onCreate(db);
+    }
 }
