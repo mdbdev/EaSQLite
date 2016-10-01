@@ -7,6 +7,5 @@
 /build
 /captures
 /.idea
-
 build.gradle
 gradle/wrapper/gradle-wrapper.properties
