@@ -16,4 +16,10 @@ public class Strings {
 
     // Table Deletion Strings
     public static final String DROP_TABLE = "DROP TABLE IF EXISTS %s";
+
+    // Table Alteration Strings
+    public static final String ALTER_TABLE = "ALTER TABLE ";
+    public static final String ADD = " ADD ";
+    public static final String DROP = " DROP ";
+
 }
