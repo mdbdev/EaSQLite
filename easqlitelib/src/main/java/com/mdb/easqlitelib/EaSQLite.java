@@ -39,7 +39,7 @@ public class EaSQLite extends SQLiteOpenHelper {
         this.onCreate(db);
     }
     //Add single column
-    public boolean addColumn(String tableName, String columnName, String type){
+    public static boolean addColumn(String tableName, String columnName, String type){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -49,7 +49,7 @@ public class EaSQLite extends SQLiteOpenHelper {
 
     }
     //Add multiple columns with an array of names
-    public boolean addColumns(String tableName, Pair<String, String>[] columns){
+    public static boolean addColumns(String tableName, Pair<String, String>[] columns){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -61,7 +61,7 @@ public class EaSQLite extends SQLiteOpenHelper {
 
     }
     //Delete single column
-    public boolean deleteColumn(String tableName, String columnName, String type){
+    public static boolean deleteColumn(String tableName, String columnName, String type){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -70,7 +70,7 @@ public class EaSQLite extends SQLiteOpenHelper {
         return true;
     }
     //Delete multiple columns with an array of names
-    public boolean deleteColumns(String tableName, String[] columnNames){
+    public static boolean deleteColumns(String tableName, String[] columnNames){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -81,7 +81,7 @@ public class EaSQLite extends SQLiteOpenHelper {
         return true;
     }
     //Add entry to SQLite database
-    public boolean addRow(String tableName, Pair<String, String>[] entries) {
+    public static boolean addRow(String tableName, Pair<String, String>[] entries) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         for (Pair<String, String> p : entries) {
@@ -91,31 +91,31 @@ public class EaSQLite extends SQLiteOpenHelper {
         return true;
     }
     //Delete entry from DB
-    public boolean deleteRow(String tableName, int id){
+    public static boolean deleteRow(String tableName, int id){
         return true;
     }
     //Delete first entry from DB
-    public boolean deleteFirstRow(String tableName){
+    public static boolean deleteFirstRow(String tableName){
         return true;
     }
     //Delete last entry from DB
-    public boolean deleteLastRow(String tableName){
+    public static boolean deleteLastRow(String tableName){
         return true;
     }
     //Delete all entries from DB
-    public boolean deleteAllRows(String tableName){
+    public static boolean deleteAllRows(String tableName){
         return true;
     }
     //Get entry by entry id returned by create row
-    public Object[] getRowById(String tableName, int id){
+    public static Object[] getRowById(String tableName, int id){
         return null;
     }
     //Create table to store custom objects
-    public String[] createTableFromObject(Object obj){
+    public static String[] createTableFromObject(Object obj){
         return null;
     }
     //Alternate method with name of object
-    public String[] createTableFromObject(String tableName, Object obj) {
+    public static String[] createTableFromObject(String tableName, Object obj) {
         return null;
     }
 

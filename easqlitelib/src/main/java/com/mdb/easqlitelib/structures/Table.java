@@ -3,7 +3,7 @@ package com.mdb.easqlitelib.structures;
 import java.util.HashMap;
 
 /**
- * Created by andyw1997 on 10/8/16.
+ * An abstraction of a SQLite Table
  */
 
 public class Table {

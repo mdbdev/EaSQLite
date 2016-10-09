@@ -1,7 +1,7 @@
 package com.mdb.easqlitelib.structures;
 
 /**
- * Created by andyw1997 on 10/8/16.
+ * Abstraction of a column in SQLite Database
  */
 
 public class Column {
