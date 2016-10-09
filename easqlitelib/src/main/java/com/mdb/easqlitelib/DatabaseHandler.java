@@ -98,6 +98,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return db.insert(tableName, null, cv) > 0;
     }
+
     //Delete entry from DB
     public boolean deleteRow(String tableName, int id){
         return true;
