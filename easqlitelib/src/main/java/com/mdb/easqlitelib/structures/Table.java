@@ -1,12 +1,12 @@
 package com.mdb.easqlitelib.structures;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An abstraction of a SQLite Table
  */
 
 public class Table {
-    private HashMap<String, Column> columns;
-    private HashMap<Integer, Entry> entries;
+    private Map<String, Column> columns;
 }

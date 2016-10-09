@@ -25,16 +25,6 @@ public class EaSQLite {
         return dbHandler.addColumns(tableName, columns);
     }
 
-    //Delete single column
-    public static boolean deleteColumn(String tableName, String columnName){
-        return dbHandler.deleteColumn(tableName, columnName);
-    }
-
-    //Delete multiple columns with an array of names
-    public static boolean deleteColumns(String tableName, String[] columnNames){
-        return dbHandler.deleteColumns(tableName, columnNames);
-    }
-
     //Add entry to SQLite database
     public static boolean addRow(String tableName, Pair<String, String>[] entries) {
         return dbHandler.addRow(tableName, entries);

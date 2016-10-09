@@ -75,20 +75,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return success;
     }
 
-    //Delete single column
-    public boolean deleteColumn(String tableName, String columnName){
-        return executeWrite(Strings.ALTER_TABLE +  tableName + Strings.DROP + columnName);
-    }
-
-    //Delete multiple columns with an array of names
-    public boolean deleteColumns(String tableName, String[] columnNames){
-        boolean success = true;
-        for(String columnName : columnNames){
-            success &= executeWrite(Strings.ALTER_TABLE +  tableName + Strings.DROP + columnName);
-        }
-        return success;
-    }
-
     //Add entry to SQLite database
     public boolean addRow(String tableName, Pair<String, String>[] entries) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -99,6 +85,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.insert(tableName, null, cv) > 0;
     }
 
+    public Object[] getColumn(String columnName){
+        return null;
+    }
     //Delete entry from DB
     public boolean deleteRow(String tableName, int id){
         return true;
