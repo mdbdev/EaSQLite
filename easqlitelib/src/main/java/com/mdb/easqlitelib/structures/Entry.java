@@ -39,7 +39,7 @@ public class Entry {
     public void addField(Object field) throws InvalidTypeException{
         String type = classType(field);
         if (type != null && !type.equals(table.getSchema().get(data.size()))) {
-            throw new InvalidTypeException();
+            throw new InvalidTypeException("Field type does not match schema");
         } else {
             data.add(field);
         }
@@ -49,7 +49,7 @@ public class Entry {
         for (int i = 0; i < data.size(); i++) {
             String type = classType(data.get(i));
             if (type == null || !type.equals(table.getSchema().get(i))) {
-                return false
+                return false;
             }
         }
         return true;

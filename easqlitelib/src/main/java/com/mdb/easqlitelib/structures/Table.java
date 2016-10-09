@@ -1,5 +1,7 @@
 package com.mdb.easqlitelib.structures;
 
+import com.mdb.easqlitelib.exceptions.InvalidTypeException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,11 +38,11 @@ public class Table {
      * It updates the schema and all the entries already part of the Table.
      * @param column the column to be added.
      */
-    public void addColumn(Column column) {
+    public void addColumn(Column column) throws InvalidTypeException {
         columns.put(column.name, column);
         schema.add(column.type);
 
-        for (Entry entry : entries) {
+        for (Entry entry : entries.values()) {
             entry.addField(null);
         }
     }
@@ -50,7 +52,7 @@ public class Table {
      * that the entry is valid in that its types match the schema.
      * @param entry the entry to be added to the table.
      */
-    public void addEntry(Entry entry) {
+    public void addEntry(Entry entry) throws InvalidTypeException {
         if (entry.verifyFields()) {
             entries.put(entry.id, entry);
         } else {
