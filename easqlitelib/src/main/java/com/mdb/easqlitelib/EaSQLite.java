@@ -1,43 +1,22 @@
 package com.mdb.easqlitelib;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import android.util.Pair;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+public class EaSQLite {
+    // Our static DatabaseHandler for managing database transactions
+    private static DatabaseHandler dbHandler;
 
-public class EaSQLite extends SQLiteOpenHelper {
-    //Database Version
-    private static final int DATABASE_VERSION = 3;
-    //Database Name
-    private static String DATABASE_NAME = "AppDB";
-    //Initial create table statement
-    private static String CREATE_TABLE;
-
-    public EaSQLite(Context context, String tableName){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    	CREATE_TABLE = "CREATE TABLE"+  tableName +
-                " (id INTEGER PRIMARY KEY AUTOINCREMENT) ";
+    /**
+     * Initialize EaSQLite by initializing our Database Handler with a specified
+     * context from the Application.
+     * @param context the context provided by the Application.
+     */
+    public void initialize(Context context) {
+        dbHandler = new DatabaseHandler(context);
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older tasks table if existed
-        db.execSQL("DROP TABLE IF EXISTS tasks");
-
-        // create fresh tasks table
-        this.onCreate(db);
-    }
     //Add single column
     public static boolean addColumn(String tableName, String columnName, String type){
 
