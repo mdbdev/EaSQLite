@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DatabaseHandler extends SQLiteOpenHelper {
+public class EaSQLite extends SQLiteOpenHelper {
     //Database Version
     private static final int DATABASE_VERSION = 3;
     //Database Name
