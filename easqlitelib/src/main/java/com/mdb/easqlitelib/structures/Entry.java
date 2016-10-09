@@ -5,4 +5,5 @@ package com.mdb.easqlitelib.structures;
  */
 
 public class Entry {
+    public int id;
 }

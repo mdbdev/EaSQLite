@@ -18,7 +18,7 @@ public class EaSQLite extends SQLiteOpenHelper {
     private static String DATABASE_NAME = "AppDB";
     //Initial create table statement
     private static String CREATE_TABLE;
-    // 
+
     public EaSQLite(Context context, String tableName){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     	CREATE_TABLE = "CREATE TABLE"+  tableName +
@@ -80,6 +80,7 @@ public class EaSQLite extends SQLiteOpenHelper {
         }
         return true;
     }
+    //Add entry to SQLite database
     public boolean addRow(String tableName, Pair<String, String>[] entries) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -89,4 +90,33 @@ public class EaSQLite extends SQLiteOpenHelper {
         db.insert(tableName, null, cv);
         return true;
     }
+    //Delete entry from DB
+    public boolean deleteRow(String tableName, int id){
+        return true;
+    }
+    //Delete first entry from DB
+    public boolean deleteFirstRow(String tableName){
+        return true;
+    }
+    //Delete last entry from DB
+    public boolean deleteLastRow(String tableName){
+        return true;
+    }
+    //Delete all entries from DB
+    public boolean deleteAllRows(String tableName){
+        return true;
+    }
+    //Get entry by entry id returned by create row
+    public Object[] getRowById(String tableName, int id){
+        return null;
+    }
+    //Create table to store custom objects
+    public String[] createTableFromObject(Object obj){
+        return null;
+    }
+    //Alternate method with name of object
+    public String[] createTableFromObject(String tableName, Object obj) {
+        return null;
+    }
+
 }
