@@ -2,6 +2,8 @@ package com.mdb.easqlitelib;
 import android.content.Context;
 import android.util.Pair;
 
+import com.mdb.easqlitelib.exceptions.InvalidTypeException;
+
 
 public class EaSQLite {
     // Our static DatabaseHandler for managing database transactions
@@ -17,17 +19,17 @@ public class EaSQLite {
     }
 
     //Add single column
-    public static boolean addColumn(String tableName, String columnName, String type){
+    public static boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException{
         return dbHandler.addColumn(tableName, columnName, type);
     }
 
     //Add multiple columns with an array of names
-    public static boolean addColumns(String tableName, Pair<String, String>[] columns){
+    public static boolean addColumns(String tableName, Pair<String, String>[] columns) throws InvalidTypeException{
         return dbHandler.addColumns(tableName, columns);
     }
 
     //Add entry to SQLite database
-    public static boolean addRow(String tableName, Pair<String, String>[] entries) {
+    public static boolean addRow(String tableName, Pair<String, String>[] entries) throws InvalidTypeException{
         return dbHandler.addRow(tableName, entries);
     }
 

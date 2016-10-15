@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Pair;
 
+import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 import com.mdb.easqlitelib.structures.Table;
 
 import java.util.HashMap;
@@ -64,17 +65,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Add single column
-    public boolean addColumn(String tableName, String columnName, String type){
-        return executeWrite(Strings.ALTER_TABLE +  tableName + Strings.ADD + columnName + Strings.SPACE + type);
+    public boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException{
+        return colAdder(tableMap.get(tableName), columnName, type);
     }
 
     //Add multiple columns with an array of names
-    public boolean addColumns(String tableName, Pair<String, String>[] columns){
+    public boolean addColumns(String tableName, Pair<String, String>[] columns) throws InvalidTypeException{
+        Table table = tableMap.get(tableName);
         boolean success = true;
-        for(Pair p : columns){
-            success &= executeWrite(Strings.ALTER_TABLE +  tableName + Strings.ADD + p.first + Strings.SPACE + p.second);
+        for(Pair<String, String> p : columns){
+            success &= colAdder(table, p.first, p.second);
         }
         return success;
+    }
+
+    //Helper function for adding columns
+    private boolean colAdder(Table table, String columnName, String type) throws InvalidTypeException{
+        String command = table.addColumn(columnName, type);
+        return executeWrite(command);
     }
 
     //Add entry to SQLite database

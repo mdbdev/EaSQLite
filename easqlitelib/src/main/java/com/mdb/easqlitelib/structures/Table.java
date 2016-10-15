@@ -1,5 +1,6 @@
 package com.mdb.easqlitelib.structures;
 
+import com.mdb.easqlitelib.Strings;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 
 import java.util.ArrayList;
@@ -36,15 +37,19 @@ public class Table {
     /**
      * This method takes in a specified column and adds it into the Table.
      * It updates the schema and all the entries already part of the Table.
-     * @param column the column to be added.
+     * @param columnName the name of the column to be added.
+     * @param type the type of the column to be added.
      */
-    public void addColumn(Column column) throws InvalidTypeException {
-        columns.put(column.name, column);
-        schema.add(column.type);
+    public String addColumn(String columnName, String type) throws InvalidTypeException {
+        Column column = new Column(columnName, type);
+        columns.put(columnName, column);
+        schema.add(type);
 
         for (Entry entry : entries.values()) {
             entry.addField(null);
         }
+
+        return Strings.ALTER_TABLE + tableName + Strings.ADD + columnName + Strings.SPACE + type;
     }
 
     /**
