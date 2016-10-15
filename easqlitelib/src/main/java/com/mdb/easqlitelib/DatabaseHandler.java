@@ -79,12 +79,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return success;
     }
 
-    //Helper function for adding columns
-    private boolean colAdder(Table table, String columnName, String type) throws InvalidTypeException{
-        String command = table.addColumn(columnName, type);
-        return executeWrite(command);
-    }
-
     //Add entry to SQLite database
     public boolean addRow(String tableName, Pair<String, String>[] entries) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -125,5 +119,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //Alternate method with name of object
     public String[] createTableFromObject(String tableName, Object obj) {
         return null;
+    }
+
+    //Helper function for adding columns
+    private boolean colAdder(Table table, String columnName, String type) throws InvalidTypeException{
+        String command = table.addColumn(columnName, type);
+        return executeWrite(command);
     }
 }
