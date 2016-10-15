@@ -7,4 +7,8 @@ import com.mdb.easqlitelib.DatabaseHandler;
  */
 public class TableCommands {
     private DatabaseHandler dbHandler;
+
+    public TableCommands(DatabaseHandler dbHandler) {
+        this.dbHandler = dbHandler;
+    }
 }
