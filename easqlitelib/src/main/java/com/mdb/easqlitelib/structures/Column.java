@@ -7,6 +7,7 @@ package com.mdb.easqlitelib.structures;
 public class Column {
     public String name;
     public String type;
+
     public Column(String name, String type) {
         this.name = name;
         this.type = type;
