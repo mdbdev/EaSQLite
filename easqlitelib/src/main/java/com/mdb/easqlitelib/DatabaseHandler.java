@@ -7,8 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.mdb.easqlitelib.structures.Table;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sirjan on 10/8/16.
@@ -22,17 +24,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
     // Database Name
     private static String DATABASE_NAME = "EaSQLiteDb";
-    // List of the names of the tables DatabaseHandler contains
-    private List<String> tableNames;
+    // Map of the names of the tables DatabaseHandler contains
+    private Map<String, Table> tableMap;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.tableNames = new ArrayList<>();
+        this.tableMap = new HashMap<>();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        for (String tableName : this.tableNames) {
+        for (String tableName : this.tableMap.keySet()) {
             String execString = String.format(Strings.CREATE_TABLE, tableName) + Strings.SPACE
                     + Strings.ID_CONDITION;
             db.execSQL(execString);
@@ -41,7 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        for (String tableName : this.tableNames) {
+        for (String tableName : this.tableMap.keySet()) {
             String execString = String.format(Strings.DROP_TABLE, tableName);
             db.execSQL(execString);
         }

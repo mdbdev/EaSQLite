@@ -2,16 +2,10 @@ package com.mdb.easqlitelib;
 import android.content.Context;
 import android.util.Pair;
 
-import com.mdb.easqlitelib.structures.Table;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class EaSQLite {
     // Our static DatabaseHandler for managing database transactions
     private static DatabaseHandler dbHandler;
-
-    private Map<String, Table> tableMap;
 
     /**
      * Initialize EaSQLite by initializing our Database Handler with a specified
@@ -20,7 +14,6 @@ public class EaSQLite {
      */
     public void initialize(Context context) {
         dbHandler = new DatabaseHandler(context);
-        tableMap = new HashMap<>();
     }
 
     //Add single column
