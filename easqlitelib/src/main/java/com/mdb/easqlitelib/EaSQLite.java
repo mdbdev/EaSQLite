@@ -4,6 +4,8 @@ import android.util.Pair;
 
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 
+import java.util.List;
+
 
 public class EaSQLite {
     // Our static DatabaseHandler for managing database transactions
@@ -33,6 +35,11 @@ public class EaSQLite {
         return dbHandler.addColumns(tableName, columns);
     }
 
+    //Get the columns of the table corresponding to table name
+    public static String[] getColumnNames(String tableName) {
+        return dbHandler.getColumnNames(tableName);
+    }
+
     //Add entry to SQLite database
     public static boolean addRow(String tableName, Pair<String, String>[] entries) throws InvalidTypeException{
         return dbHandler.addRow(tableName, entries);
@@ -40,7 +47,7 @@ public class EaSQLite {
 
     //Delete entry from DB
     public static boolean deleteRow(String tableName, int id){
-        return true;
+        return dbHandler.deleteRow(tableName, id);
     }
 
     //Delete first entry from DB
