@@ -13,4 +13,61 @@
     tools:context="com.mdb.sirjan.easqlite.MainActivity"
     tools:showIn="@layout/activity_main">
 
+
+
+    <TextView
+        android:id="@+id/textViewColumn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Current Columns:" />
+
+    <TextView
+        android:id="@+id/textViewRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewColumn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="72dp"
+        android:text="Current Rows:" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layoutColumn"
+        android:layout_marginTop="72dp"
+        android:layout_below="@+id/textViewRow">
+        <EditText
+            android:id="@+id/editTextColumn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Add Column Name" />
+        <Button
+            android:text="Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textViewColumn"
+            android:id="@+id/buttonColumn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutColumn">
+        <EditText
+            android:id="@+id/editTextrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Add Row Name" />
+        <Button
+            android:text="Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textViewRow"
+            android:id="@+id/buttonRow" />
+    </LinearLayout>
 </RelativeLayout>
