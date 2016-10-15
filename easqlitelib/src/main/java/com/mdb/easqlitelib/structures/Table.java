@@ -65,6 +65,10 @@ public class Table {
         }
     }
 
+    public Map<Integer, Entry> getEntries(){
+        return entries;
+    }
+
     /**
      * This method removes a specified entry from the table.
      * @param entry the entry to be removed from the table.

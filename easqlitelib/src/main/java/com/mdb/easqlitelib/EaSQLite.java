@@ -4,6 +4,8 @@ import android.util.Pair;
 
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 
+import java.util.List;
+
 
 public class EaSQLite {
     // Our static DatabaseHandler for managing database transactions
@@ -54,8 +56,8 @@ public class EaSQLite {
     }
 
     //Get entry by entry id returned by create row
-    public static Object[] getRowById(String tableName, int id){
-        return null;
+    public static List<Object> getRowById(String tableName, int id){
+        return dbHandler.getRowById(tableName, id);
     }
 
     //Create table to store custom objects
