@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Pair;
 
+import com.mdb.easqlitelib.commands.TableCommands;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 import com.mdb.easqlitelib.structures.Table;
 
@@ -27,10 +28,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static String DATABASE_NAME = "EaSQLiteDb";
     // Map of the names of the tables DatabaseHandler contains
     private Map<String, Table> tableMap;
+    // Map of the names to a respective TableCommands
+    private Map<String, TableCommands> tableCommandsMap;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.tableMap = new HashMap<>();
+        this.tableCommandsMap = new HashMap<>();
     }
 
     @Override
@@ -62,6 +66,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return false;
         }
         return true;
+    }
+
+    // Create a table from a tableName
+    public boolean createTable(String tableName) {
+        Table table = new Table(tableName);
+        String createTableCommand = String.format(Strings.CREATE_TABLE, tableName) + Strings.SPACE
+                    + Strings.ID_CONDITION;
+        if (tableMap.containsKey(tableName)) {
+            return false;
+        } else {
+            tableMap.put(tableName, table);
+            return executeWrite(createTableCommand);
+        }
     }
 
     //Add single column

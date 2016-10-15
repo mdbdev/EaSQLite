@@ -11,4 +11,6 @@ public class TableCommands {
     public TableCommands(DatabaseHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
+
+
 }

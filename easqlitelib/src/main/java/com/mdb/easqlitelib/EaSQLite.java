@@ -14,8 +14,13 @@ public class EaSQLite {
      * context from the Application.
      * @param context the context provided by the Application.
      */
-    public void initialize(Context context) {
+    public static void initialize(Context context) {
         dbHandler = new DatabaseHandler(context);
+    }
+
+    // Create a table given a tableName
+    public static boolean createTable(String tableName) {
+        return dbHandler.createTable(tableName);
     }
 
     //Add single column
