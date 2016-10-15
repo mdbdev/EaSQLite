@@ -16,8 +16,13 @@ public class EaSQLite {
      * context from the Application.
      * @param context the context provided by the Application.
      */
-    public void initialize(Context context) {
+    public static void initialize(Context context) {
         dbHandler = new DatabaseHandler(context);
+    }
+
+    // Create a table given a tableName
+    public static boolean createTable(String tableName) {
+        return dbHandler.createTable(tableName);
     }
 
     //Add single column
@@ -30,6 +35,11 @@ public class EaSQLite {
         return dbHandler.addColumns(tableName, columns);
     }
 
+    //Get the columns of the table corresponding to table name
+    public static String[] getColumnNames(String tableName) {
+        return dbHandler.getColumnNames(tableName);
+    }
+
     //Add entry to SQLite database
     public static boolean addRow(String tableName, Pair<String, String>[] entries) throws InvalidTypeException{
         return dbHandler.addRow(tableName, entries);
@@ -37,7 +47,7 @@ public class EaSQLite {
 
     //Delete entry from DB
     public static boolean deleteRow(String tableName, int id){
-        return true;
+        return dbHandler.deleteRow(tableName, id);
     }
 
     //Delete first entry from DB

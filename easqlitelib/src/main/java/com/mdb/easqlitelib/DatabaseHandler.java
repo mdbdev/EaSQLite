@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Pair;
 
+import com.mdb.easqlitelib.commands.TableCommand;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 import com.mdb.easqlitelib.structures.Table;
 
@@ -26,10 +27,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static String DATABASE_NAME = "EaSQLiteDb";
     // Map of the names of the tables DatabaseHandler contains
     private Map<String, Table> tableMap;
+    // Map of the names to a respective TableCommand
+    private Map<String, TableCommand> tableCommandsMap;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.tableMap = new HashMap<>();
+        this.tableCommandsMap = new HashMap<>();
     }
 
     @Override
@@ -63,6 +67,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return true;
     }
 
+    // Create a table from a tableName
+    public boolean createTable(String tableName) {
+        Table table = new Table(tableName);
+        String createTableCommand = String.format(Strings.CREATE_TABLE, tableName) + Strings.SPACE
+                    + Strings.ID_CONDITION;
+        if (tableMap.containsKey(tableName)) {
+            return false;
+        } else {
+            tableMap.put(tableName, table);
+            return executeWrite(createTableCommand);
+        }
+    }
+
     //Add single column
     public boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException{
         return colAdder(tableMap.get(tableName), columnName, type);
@@ -78,6 +95,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return success;
     }
 
+    //Get the column names of the table
+    public String[] getColumnNames(String tableName) {
+        Table table = tableMap.get(tableName);
+        return table.getColumnNames();
+    }
+
     //Add entry to SQLite database
     public boolean addRow(String tableName, Pair<String, String>[] entries) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -88,33 +111,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.insert(tableName, null, cv) > 0;
     }
 
-    public Object[] getColumn(String columnName){
-        return null;
-    }
     //Delete entry from DB
     public boolean deleteRow(String tableName, int id){
-        return true;
+        Table table = tableMap.get(tableName);
+        TableCommand tableCommand = tableCommandsMap.get(tableName);
+        return false;
     }
+
     //Delete first entry from DB
     public boolean deleteFirstRow(String tableName){
         return true;
     }
+
     //Delete last entry from DB
     public boolean deleteLastRow(String tableName){
         return true;
     }
+
     //Delete all entries from DB
     public boolean deleteAllRows(String tableName){
         return true;
     }
+
     //Get entry by entry id returned by create row
     public List<Object> getRowById(String tableName, int id){
         return tableMap.get(tableName).getEntries().get(id).data;
     }
+
     //Create table to store custom objects
     public String[] createTableFromObject(Object obj){
         return null;
     }
+
     //Alternate method with name of object
     public String[] createTableFromObject(String tableName, Object obj) {
         return null;

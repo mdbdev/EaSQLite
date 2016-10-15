@@ -80,4 +80,12 @@ public class Table {
     public List<String> getSchema() {
         return schema;
     }
+
+    /**
+     * Retrieves all the column names of the table.
+     * @return String array of all the column names.
+     */
+    public String[] getColumnNames() {
+        return columns.keySet().toArray(new String[columns.size()]);
+    }
 }
