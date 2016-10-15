@@ -20,7 +20,7 @@ public class Entry {
         data = new ArrayList<Object>(list);
     }
 
-    public String classType(Object o) {
+    private String classType(Object o) {
         if (o == null) {
             return "NULL";
         }
