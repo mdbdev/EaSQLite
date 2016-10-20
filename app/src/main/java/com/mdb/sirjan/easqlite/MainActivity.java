@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.mdb.easqlitelib.*;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,9 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private Button addRow;
     private List<String> columnList;
     private List<String> rowList;
-    private String TABLE_NAME = "Test Table";
+    private String TABLE_NAME = "testTable";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        columnList = new ArrayList<String>();
+        EaSQLite.initialize(getApplicationContext());
         EaSQLite.createTable(TABLE_NAME);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -38,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
         editTextColumn = (EditText) findViewById(R.id.editTextColumn);
         editTextRow = (EditText) findViewById(R.id.editTextRow);
         addColumn = (Button) findViewById(R.id.buttonColumn);
+        addRow = (Button) findViewById(R.id.buttonRow);
+        refreshStuff();
         addColumn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                columnList.add(editTextColumn.getText().toString());
-                textViewColumn.setText(textViewColumn.getText().toString() + " " + editTextColumn.getText().toString());
                 try{
-                EaSQLite.addColumn(TABLE_NAME, editTextColumn.getText().toString(), "String");}
+                EaSQLite.addColumn(TABLE_NAME, editTextColumn.getText().toString(), "String");
+                refreshStuff();}
                 catch (InvalidTypeException e){
                     System.out.println(e);
                 }
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 rowList.add(editTextRow.getText().toString());
-                textViewRow.setText(textViewRow.getText().toString() + " " + editTextRow.getText().toString());
+                textViewRow.setText(textViewRow.getText().toString() + ", " + editTextRow.getText().toString());
 
             }
         });
@@ -62,5 +66,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void refreshStuff(){
+        textViewColumn.setText("Column Names:");
+        columnList = new ArrayList<String>();
+        for(String s : EaSQLite.getColumnNames(TABLE_NAME)){
+
+            columnList.add(s);
+        }
+        for(String s : columnList){
+
+            textViewColumn.setText(textViewColumn.getText().toString() + " " + s);
+        }
+
     }
 }
