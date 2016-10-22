@@ -46,7 +46,7 @@ public class EaSQLite {
 
     // Change the table name from currentName to newName
     public static boolean changeTableName(String currentName, String newName) {
-        dbHandler.changeTableName(currentName, newName);
+        return dbHandler.changeTableName(currentName, newName);
     }
 
     // Get the number of columns for the table
@@ -71,7 +71,7 @@ public class EaSQLite {
 
     // Retrieve a column as an array of objects
     public static Object[] getColumn(String tableName, String columnName) {
-        return null;
+        return dbHandler.getColumn(tableName, columnName);
     }
 
     //Get the columns of the table corresponding to table name

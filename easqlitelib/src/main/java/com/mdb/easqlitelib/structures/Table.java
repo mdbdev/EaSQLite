@@ -74,6 +74,10 @@ public class Table {
         return entries;
     }
 
+    public int getColumnIndex(String columnName) {
+        return columnIndex.indexOf(columnName);
+    }
+
     /**
      * This method removes a specified entry from the table.
      * @param id the id of the entry to be removed from the table.

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Pair;
 
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
+import com.mdb.easqlitelib.structures.Entry;
 import com.mdb.easqlitelib.structures.Table;
 
 import java.util.ArrayList;
@@ -149,12 +150,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //Get entry by entry id returned by create row
     public List<Object> getRowById(String tableName, int id){
-        return new ArrayList<Object>(tableMap.get(tableName).getEntries().get(id).data);
+        return new ArrayList<>(tableMap.get(tableName).getEntries().get(id).data);
     }
 
     public Object[] getColumn(String tableName, String colName) {
         Table table = tableMap.get(tableName);
-        return null;
+        Map<Integer, Entry> entries = table.getEntries();
+        Object[] column = new Object[entries.size()];
+        int index = table.getColumnIndex(colName);
+        int pos = 0;
+        for (Entry e : entries.values()) {
+            column[pos] = e.data.get(index);
+            pos ++;
+        }
+        return column;
     }
 
     //Create table to store custom objects
