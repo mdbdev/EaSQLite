@@ -28,17 +28,6 @@ public class EaSQLite {
     }
 
     // Create a table given a tableName and columnList where Pair first is column name and second is type
-    public static boolean createTable(String tableName, Pair<String, String>[] columnList) {
-        boolean working = dbHandler.createTable(tableName);
-        for (Pair<String, String> p : columnList) {
-            try {
-                working &= dbHandler.addColumn(tableName, p.first, p.second);
-            } catch (Exception e) {
-                System.out.print(e);
-            }
-        }
-        return working;
-    }
 
     // Delete a table given the tableName
     public static boolean deleteTable(String tableName) {
@@ -47,7 +36,7 @@ public class EaSQLite {
 
     // Retrieve all Table Names
     public static String[] getTableNames() {
-        return null;
+        return dbHandler.getTableNames();
     }
 
     // Give a String representation of a table given a tableName
@@ -57,7 +46,7 @@ public class EaSQLite {
 
     // Change the table name from currentName to newName
     public static boolean changeTableName(String currentName, String newName) {
-        return false;
+        dbHandler.changeTableName(currentName, newName);
     }
 
     // Get the number of columns for the table

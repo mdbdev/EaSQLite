@@ -76,6 +76,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return executeWrite(createTableCommand);
         }
     }
+    // Create a table given a tableName and columnList where Pair first is column name and second is type
+
+    public boolean createTable(String tableName, Pair<String, String>[] columnList) {
+        boolean working = createTable(tableName);
+        for (Pair<String, String> p : columnList) {
+            try {
+                working &= addColumn(tableName, p.first, p.second);
+            } catch (Exception e) {
+                System.out.print(e);
+            }
+        }
+        return working;
+    }
     // Delete table form a tableName
     public boolean deleteTable(String tableName){
         String deleteTableCommand = String.format(Strings.DROP_TABLE, tableName);
@@ -95,7 +108,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return success;
     }
-
+    //Change the table name
+    public boolean changeTableName(String tableName, String newName){
+        String changeTableNameCommand = Strings.ALTER_TABLE + tableName + Strings.RENAME_TO + newName;
+        return executeWrite(changeTableNameCommand);
+    }
     //Get the column names of the table
     public String[] getColumnNames(String tableName) {
         Table table = tableMap.get(tableName);
@@ -154,5 +171,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private boolean colAdder(Table table, String columnName, String type) throws InvalidTypeException{
         String command = table.addColumn(columnName, type);
         return executeWrite(command);
+    }
+    public String[] getTableNames(){
+        String[] tableNames = new String[tableMap.size()];
+        int count = 0;
+        for(Map.Entry<String, Table> entry : tableMap.entrySet()){
+            tableNames[count] = entry.getKey();
+            count++;
+        }
+        return tableNames;
     }
 }

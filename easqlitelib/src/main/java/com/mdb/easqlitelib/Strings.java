@@ -22,4 +22,5 @@ public class Strings {
     public static final String ADD = " ADD ";
     public static final String DELETE_FROM = "DELETE FROM ";
     public static final String WHERE = " WHERE ";
+    public static final String RENAME_TO = " RENAME TO ";
 }
