@@ -27,7 +27,7 @@ public class EaSQLite {
         return dbHandler.createTable(tableName);
     }
 
-    // Create a table given a tableName and columnNames
+    // Create a table given a tableName and columnList where Pair first is column name and second is type
     public static boolean createTable(String tableName, Pair<String, String>[] columnList) {
         boolean working = dbHandler.createTable(tableName);
         for (Pair<String, String> p : columnList) {
@@ -42,7 +42,7 @@ public class EaSQLite {
 
     // Delete a table given the tableName
     public static boolean deleteTable(String tableName) {
-        return false;
+        return dbHandler.deleteTable(tableName);
     }
 
     // Retrieve all Table Names
