@@ -75,7 +75,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return executeWrite(createTableCommand);
         }
     }
-
+    // Delete table form a tableName
+    public boolean deleteTable(String tableName){
+        String deleteTableCommand = String.format(Strings.DROP_TABLE, tableName);
+        return executeWrite(deleteTableCommand);
+    }
     //Add single column
     public boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException{
         return colAdder(tableMap.get(tableName), columnName, type);
