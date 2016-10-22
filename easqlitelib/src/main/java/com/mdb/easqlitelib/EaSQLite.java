@@ -4,6 +4,8 @@ import android.util.Pair;
 
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 
+import java.util.List;
+
 
 public class EaSQLite {
     // Our static DatabaseHandler for managing database transactions
