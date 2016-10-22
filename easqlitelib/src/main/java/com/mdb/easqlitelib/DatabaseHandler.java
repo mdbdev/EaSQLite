@@ -12,11 +12,10 @@ import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 import com.mdb.easqlitelib.structures.Table;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Created by sirjan on 10/8/16.
- *
  * DatabaseHandler will manage all Database Transactions and deal
  * with executing String SQLite instructions.
  */
@@ -135,8 +134,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Get entry by entry id returned by create row
-    public Object[] getRowById(String tableName, int id){
-        return null;
+    public List<Object> getRowById(String tableName, int id){
+        return tableMap.get(tableName).getEntries().get(id).data;
     }
 
     //Create table to store custom objects

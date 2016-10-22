@@ -64,8 +64,8 @@ public class EaSQLite {
     }
 
     //Get entry by entry id returned by create row
-    public static Object[] getRowById(String tableName, int id){
-        return null;
+    public static List<Object> getRowById(String tableName, int id){
+        return dbHandler.getRowById(tableName, id);
     }
 
     //Create table to store custom objects
