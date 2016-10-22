@@ -74,6 +74,11 @@ public class Table {
         return entries;
     }
 
+    /**
+     * This method takes in a column name and returns the index
+     * of that column in the ordered list of columns
+     * @param columnName the name of the column.
+     */
     public int getColumnIndex(String columnName) {
         return columnIndex.indexOf(columnName);
     }

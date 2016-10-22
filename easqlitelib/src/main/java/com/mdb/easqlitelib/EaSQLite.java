@@ -51,12 +51,12 @@ public class EaSQLite {
 
     // Get the number of columns for the table
     public static int getNumColumns(String tableName) {
-        return 0;
+        return dbHandler.getNumColumns(tableName);
     }
 
     // Get the number of rows for the table
     public static int getNumRows(String tableName) {
-        return 0;
+        return dbHandler.getNumRows(tableName);
     }
 
     //Add single column

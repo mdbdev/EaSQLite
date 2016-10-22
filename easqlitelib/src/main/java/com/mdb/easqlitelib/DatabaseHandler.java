@@ -153,6 +153,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return new ArrayList<>(tableMap.get(tableName).getEntries().get(id).data);
     }
 
+    //Get unordered array of the values under a column
     public Object[] getColumn(String tableName, String colName) {
         Table table = tableMap.get(tableName);
         Map<Integer, Entry> entries = table.getEntries();
@@ -164,6 +165,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             pos ++;
         }
         return column;
+    }
+
+    //Get number of columns in a table
+    public int getNumColumns(String tableName) {
+        Table table = tableMap.get(tableName);
+        return table.getColumnNames().length;
+    }
+
+    //Get number of columns in a table
+    public int getNumRows(String tableName) {
+        Table table = tableMap.get(tableName);
+        return table.getEntries().size();
     }
 
     //Create table to store custom objects
