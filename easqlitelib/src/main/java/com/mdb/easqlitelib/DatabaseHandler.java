@@ -108,9 +108,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Delete entry from DB
-    public boolean deleteRow(String tableName, int id){
+    public List<Object> deleteRow(String tableName, int id){
+        String command = Strings.DELETE_FROM + tableName + Strings.WHERE + "id=" + id;
+        if (!executeWrite(command))
+            return null;
         Table table = tableMap.get(tableName);
-        return false;
+        List<Object> entry = table.removeEntry(id);
+        return entry;
     }
 
     //Delete first entry from DB
@@ -125,7 +129,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //Delete all entries from DB
     public boolean deleteAllRows(String tableName){
-        return true;
+        Table table = tableMap.get(tableName);
+        table.getEntries().clear();
+        String command = Strings.DELETE_FROM + tableName;
+        return executeWrite(command);
     }
 
     //Get entry by entry id returned by create row

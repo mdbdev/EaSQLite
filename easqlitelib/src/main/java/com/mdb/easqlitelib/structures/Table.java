@@ -71,10 +71,11 @@ public class Table {
 
     /**
      * This method removes a specified entry from the table.
-     * @param entry the entry to be removed from the table.
+     * @param id the id of the entry to be removed from the table.
      */
-    public void removeEntry(Entry entry) {
-        entries.remove(entry.id);
+    public List<Object> removeEntry(int id) {
+        Entry entry = entries.remove(id);
+        return entry.data;
     }
 
     public List<String> getSchema() {

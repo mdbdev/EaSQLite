@@ -20,4 +20,6 @@ public class Strings {
     // Table Alteration Strings
     public static final String ALTER_TABLE = "ALTER TABLE ";
     public static final String ADD = " ADD ";
+    public static final String DELETE_FROM = "DELETE FROM ";
+    public static final String WHERE = " WHERE ";
 }
