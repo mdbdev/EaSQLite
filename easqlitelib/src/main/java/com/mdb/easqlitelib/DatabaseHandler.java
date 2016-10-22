@@ -10,6 +10,7 @@ import android.util.Pair;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 import com.mdb.easqlitelib.structures.Table;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,16 +122,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return entry;
     }
 
-    //Delete first entry from DB
-    public boolean deleteFirstRow(String tableName){
-        return true;
-    }
-
-    //Delete last entry from DB
-    public boolean deleteLastRow(String tableName){
-        return true;
-    }
-
     //Delete all entries from DB
     public boolean deleteAllRows(String tableName){
         Table table = tableMap.get(tableName);
@@ -141,7 +132,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //Get entry by entry id returned by create row
     public List<Object> getRowById(String tableName, int id){
-        return tableMap.get(tableName).getEntries().get(id).data;
+        return new ArrayList<Object>(tableMap.get(tableName).getEntries().get(id).data);
+    }
+
+    public Object[] getColumn(String tableName, String colName) {
+        Table table = tableMap.get(tableName);
+        return null;
     }
 
     //Create table to store custom objects

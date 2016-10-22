@@ -27,11 +27,15 @@ public class Table {
     // A mapping from column names to the actual column
     private Map<String, Column> columns;
 
+    // A mapping from column name to column position
+    private List<String> columnIndex;
+
     public Table(String tableName) {
         this.tableName = tableName;
         this.schema = new ArrayList<>();
         this.columns = new HashMap<>();
         this.entries = new HashMap<>();
+        this.columnIndex = new ArrayList<>();
     }
 
     /**
@@ -44,6 +48,7 @@ public class Table {
         Column column = new Column(columnName, type);
         columns.put(columnName, column);
         schema.add(type);
+        columnIndex.add(columnName);
 
         for (Entry entry : entries.values()) {
             entry.addField(null);
@@ -83,10 +88,10 @@ public class Table {
     }
 
     /**
-     * Retrieves all the column names of the table.
+     * Retrieves all the column names of the table in order.
      * @return String array of all the column names.
      */
     public String[] getColumnNames() {
-        return columns.keySet().toArray(new String[columns.size()]);
+        return (String[])(columnIndex.toArray());
     }
 }

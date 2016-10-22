@@ -96,23 +96,13 @@ public class EaSQLite {
     }
 
     //Delete entry from DB
-    public static boolean deleteRow(String tableName, int id) {
+    public static List<Object> deleteRow(String tableName, int id) {
         return dbHandler.deleteRow(tableName, id);
-    }
-
-    //Delete first entry from DB
-    public static boolean deleteFirstRow(String tableName) {
-        return true;
-    }
-
-    //Delete last entry from DB
-    public static boolean deleteLastRow(String tableName) {
-        return true;
     }
 
     //Delete all entries from DB
     public static boolean deleteAllRows(String tableName) {
-        return true;
+        return dbHandler.deleteAllRows(tableName);
     }
 
     //Get entry by entry id returned by create row
