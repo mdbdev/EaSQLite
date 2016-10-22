@@ -25,6 +25,41 @@ public class EaSQLite {
         return dbHandler.createTable(tableName);
     }
 
+    // Create a table given a tableName and columnNames
+    public static boolean createTable(String tableName, String[] columnNames) {
+        return false;
+    }
+
+    // Delete a table given the tableName
+    public static boolean deleteTable(String tableName) {
+        return false;
+    }
+
+    // Retrieve all Table Names
+    public static String[] getTableNames() {
+        return null;
+    }
+
+    // Give a String representation of a table given a tableName
+    public static String tableToString(String tableName) {
+        return null;
+    }
+
+    // Change the table name from currentName to newName
+    public static boolean changeTableName(String currentName, String newName) {
+        return false;
+    }
+
+    // Get the number of columns for the table
+    public static int getNumColumns(String tableName) {
+        return 0;
+    }
+
+    // Get the number of rows for the table
+    public static int getNumRows(String tableName) {
+        return 0;
+    }
+
     //Add single column
     public static boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException{
         return dbHandler.addColumn(tableName, columnName, type);
@@ -33,6 +68,11 @@ public class EaSQLite {
     //Add multiple columns with an array of names
     public static boolean addColumns(String tableName, Pair<String, String>[] columns) throws InvalidTypeException{
         return dbHandler.addColumns(tableName, columns);
+    }
+
+    // Retrieve a column as an array of objects
+    public static Object[] getColumn(String tableName, String columnName) {
+        return null;
     }
 
     //Get the columns of the table corresponding to table name
