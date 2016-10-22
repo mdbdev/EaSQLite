@@ -107,7 +107,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return success;
     }
-
+    //Change the table name
+    public boolean changeTableName(String tableName, String newName){
+        String changeTableNameCommand = Strings.ALTER_TABLE + tableName + Strings.RENAME_TO + newName;
+        return executeWrite(changeTableNameCommand);
+    }
     //Get the column names of the table
     public String[] getColumnNames(String tableName) {
         Table table = tableMap.get(tableName);

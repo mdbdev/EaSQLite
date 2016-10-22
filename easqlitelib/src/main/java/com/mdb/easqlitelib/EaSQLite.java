@@ -46,7 +46,7 @@ public class EaSQLite {
 
     // Change the table name from currentName to newName
     public static boolean changeTableName(String currentName, String newName) {
-        return false;
+        dbHandler.changeTableName(currentName, newName);
     }
 
     // Get the number of columns for the table
