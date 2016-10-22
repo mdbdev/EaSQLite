@@ -28,6 +28,9 @@ public class EaSQLite {
     }
 
     // Create a table given a tableName and columnList where Pair first is column name and second is type
+    public boolean createTable(String tableName, Pair<String, String>[] columnList) {
+        return dbHandler.createTable(tableName, columnList);
+    }
 
     // Delete a table given the tableName
     public static boolean deleteTable(String tableName) {
