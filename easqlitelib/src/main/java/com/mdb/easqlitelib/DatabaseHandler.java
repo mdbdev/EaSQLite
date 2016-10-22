@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Pair;
 
-import com.mdb.easqlitelib.commands.TableCommand;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 import com.mdb.easqlitelib.structures.Table;
 
@@ -27,13 +26,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static String DATABASE_NAME = "EaSQLiteDb";
     // Map of the names of the tables DatabaseHandler contains
     private Map<String, Table> tableMap;
-    // Map of the names to a respective TableCommand
-    private Map<String, TableCommand> tableCommandsMap;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.tableMap = new HashMap<>();
-        this.tableCommandsMap = new HashMap<>();
     }
 
     @Override
@@ -114,7 +110,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //Delete entry from DB
     public boolean deleteRow(String tableName, int id){
         Table table = tableMap.get(tableName);
-        TableCommand tableCommand = tableCommandsMap.get(tableName);
         return false;
     }
 
