@@ -14,20 +14,9 @@
         android:stretchColumns="1">
         <TableRow>
             <TextView
-                android:padding="3dip"
-                android:text="lol"/>
-            <TextView
                 android:padding="3dip" />
             <TextView
                 android:padding="3dip" />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:padding="3dip" />
-            <TextView
-                android:padding="3dip"
-                android:text="lol"/>
             <TextView
                 android:padding="3dip" />
         </TableRow>
@@ -47,8 +36,16 @@
             <TextView
                 android:padding="3dip" />
             <TextView
-                android:padding="3dip"
-                android:text="lol"/>
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:padding="3dip" />
+            <TextView
+                android:padding="3dip" />
+            <TextView
+                android:padding="3dip" />
         </TableRow>
 
         <TableRow>
