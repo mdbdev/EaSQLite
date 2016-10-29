@@ -20,4 +20,7 @@ public class Strings {
     // Table Alteration Strings
     public static final String ALTER_TABLE = "ALTER TABLE ";
     public static final String ADD = " ADD ";
+
+    // Table Selection Strings
+    public static final String SELECT_ALL = "SELECT * FROM %s";
 }

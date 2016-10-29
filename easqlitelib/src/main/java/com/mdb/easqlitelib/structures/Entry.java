@@ -10,11 +10,11 @@ import java.util.List;
  */
 
 public class Entry {
-    public int id;
+    public long id;
     public List<Object> data;
     public Table table;
 
-    public Entry(int id, List<Object> list, Table table) {
+    public Entry(long id, List<Object> list, Table table) {
         this.id = id;
         this.table = table;
         data = new ArrayList<Object>(list);
