@@ -22,7 +22,7 @@ public class Table {
     private List<String> schema;
 
     // The Entry Rows of the Table
-    private Map<Integer, Entry> entries;
+    private Map<Long, Entry> entries;
 
     // A mapping from column names to the actual column
     private Map<String, Column> columns;
@@ -70,7 +70,7 @@ public class Table {
         }
     }
 
-    public Map<Integer, Entry> getEntries(){
+    public Map<Long, Entry> getEntries(){
         return entries;
     }
 

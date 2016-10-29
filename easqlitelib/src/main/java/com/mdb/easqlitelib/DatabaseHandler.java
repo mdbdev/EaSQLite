@@ -173,7 +173,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //Get unordered array of the values under a column
     public Object[] getColumn(String tableName, String colName) {
         Table table = tableMap.get(tableName);
-        Map<Integer, Entry> entries = table.getEntries();
+        Map<Long, Entry> entries = table.getEntries();
         Object[] column = new Object[entries.size()];
         int index = table.getColumnIndex(colName);
         int pos = 0;
