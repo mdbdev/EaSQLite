@@ -124,10 +124,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public boolean addRow(String tableName, Pair<String, String>[] entries) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
+        Table table = tableMap.get(tableName);
+        List<Object> list = new ArrayList<Object>(entries.length);
         for (Pair<String, String> p : entries) {
             cv.put(p.first, p.second);
+            int i = table.getColumnIndex(p.first);
+            if (i < 0) return false;
+            list.add(i, p.second);
         }
-        return db.insert(tableName, null, cv) > 0;
+        long id = db.insert(tableName, null, cv);
+        if (id < 0) return false;
+        Entry entry = new Entry(id, list, table);
+        try {
+            table.addEntry(entry);
+        } catch (InvalidTypeException e) {
+            return false;
+        }
+        return true;
     }
 
     //Delete entry from DB

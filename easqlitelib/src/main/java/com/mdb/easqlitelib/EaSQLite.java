@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 
+import java.util.Arrays;
 import java.util.List;
 
 

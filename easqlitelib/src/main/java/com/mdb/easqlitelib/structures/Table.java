@@ -27,15 +27,19 @@ public class Table {
     // A mapping from column names to the actual column
     private Map<String, Column> columns;
 
-    // A mapping from column name to column position
-    private List<String> columnIndex;
+    // A list of column names in order
+    private List<String> columnList;
+
+    // A mapping from column name to index
+    private Map<String, Integer> columnIndex;
 
     public Table(String tableName) {
         this.tableName = tableName;
         this.schema = new ArrayList<>();
         this.columns = new HashMap<>();
         this.entries = new HashMap<>();
-        this.columnIndex = new ArrayList<>();
+        this.columnList = new ArrayList<>();
+        this.columnIndex = new HashMap<>();
     }
 
     /**
@@ -48,7 +52,8 @@ public class Table {
         Column column = new Column(columnName, type);
         columns.put(columnName, column);
         schema.add(type);
-        columnIndex.add(columnName);
+        columnList.add(columnName);
+        columnIndex.put(columnName, columnIndex.size());
 
         for (Entry entry : entries.values()) {
             entry.addField(null);
@@ -80,7 +85,8 @@ public class Table {
      * @param columnName the name of the column.
      */
     public int getColumnIndex(String columnName) {
-        return columnIndex.indexOf(columnName);
+        Integer i = columnIndex.get(columnName);
+        return (i != null) ? i : -1;
     }
 
     /**
@@ -101,6 +107,6 @@ public class Table {
      * @return String array of all the column names.
      */
     public String[] getColumnNames() {
-        return (String[])(columnIndex.toArray());
+        return (String[])(columnList.toArray());
     }
 }
