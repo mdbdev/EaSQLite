@@ -142,7 +142,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         Table table = tableMap.get(tableName);
-        List<Object> list = new ArrayList<Object>(entries.length);
+        List<Object> list = new ArrayList<>(entries.length);
         for (Pair<String, String> p : entries) {
             cv.put(p.first, p.second);
             int i = table.getColumnIndex(p.first);
