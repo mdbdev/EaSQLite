@@ -19,8 +19,9 @@ public class EaSQLite {
      *
      * @param context the context provided by the Application.
      */
-    public static void initialize(Context context) {
+    public static void initialize(Context context) throws InvalidTypeException {
         dbHandler = new DatabaseHandler(context);
+        dbHandler.initializeAllTables();
     }
 
     // Create a table given a tableName

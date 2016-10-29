@@ -20,6 +20,9 @@ public class Strings {
     // Table Alteration Strings
     public static final String ALTER_TABLE = "ALTER TABLE ";
     public static final String ADD = " ADD ";
+
+    // Table Selection Strings
+    public static final String SELECT_ALL = "SELECT * FROM %s";
     public static final String DELETE_FROM = "DELETE FROM ";
     public static final String WHERE = " WHERE ";
     public static final String RENAME_TO = " RENAME TO ";

@@ -2,6 +2,7 @@ package com.mdb.easqlitelib;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -26,12 +27,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
     // Database Name
     private static String DATABASE_NAME = "EaSQLiteDb";
+    // Table Name Schema (bootstrapping)
+    private static String TABLE_NAME_SCHEMA = "table_name_schema";
     // Map of the names of the tables DatabaseHandler contains
     private Map<String, Table> tableMap;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.tableMap = new HashMap<>();
+        this.tableMap.put(TABLE_NAME_SCHEMA, new Table(TABLE_NAME_SCHEMA));
     }
 
     @Override
@@ -48,6 +52,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         for (String tableName : this.tableMap.keySet()) {
             String execString = String.format(Strings.DROP_TABLE, tableName);
             db.execSQL(execString);
+        }
+    }
+
+    /**
+     * Loads up tableMap with all the tables in the database.
+     */
+    public void initializeAllTables() throws InvalidTypeException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> tableNames = getLocalStorageTableNames(db);
+
+        for (String tableName : tableNames) {
+            Table table = createTableFromLocalStorage(tableName, db);
+            this.tableMap.put(tableName, table);
         }
     }
 
@@ -169,7 +186,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //Get unordered array of the values under a column
     public Object[] getColumn(String tableName, String colName) {
         Table table = tableMap.get(tableName);
-        Map<Integer, Entry> entries = table.getEntries();
+        Map<Long, Entry> entries = table.getEntries();
         Object[] column = new Object[entries.size()];
         int index = table.getColumnIndex(colName);
         int pos = 0;
@@ -207,6 +224,110 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String command = table.addColumn(columnName, type);
         return executeWrite(command);
     }
+
+    /**
+     * Retrives the names of all the tables in the database.
+     * @param db the SQLiteDatabase used.
+     * @return   a List of Strings of the table names.
+     */
+    private List<String> getLocalStorageTableNames(SQLiteDatabase db) {
+        List<String> tableNames = new ArrayList<>();
+        String query = String.format(Strings.SELECT_ALL, TABLE_NAME_SCHEMA);
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    String name = cursor.getString(1);
+                    tableNames.add(name);
+                } while (cursor.moveToFirst());
+            }
+
+            cursor.close();
+        }
+
+        return tableNames;
+    }
+
+    /**
+     * Creates a Table object from a table currently stored locally.
+     * @param tableName the name of the table.
+     * @param db        the SQLiteDatabase used.
+     * @return          a table object representation of the locally stored table.
+     */
+    private Table createTableFromLocalStorage(String tableName, SQLiteDatabase db) throws InvalidTypeException {
+        String query = String.format(Strings.SELECT_ALL, tableName);
+        Cursor cursor = db.rawQuery(query, null);
+        Table table = new Table(tableName);
+        int columnIndex = 0;
+        if (cursor != null) {
+            String[] columnNames = cursor.getColumnNames();
+            for (String columnName : cursor.getColumnNames()) {
+                try {
+                    table.addColumn(columnName, getTypeFromInt(cursor.getType(columnIndex)));
+                } catch (InvalidTypeException e) {
+                    return new Table(tableName); // Should never reach here.
+                }
+
+                columnIndex++;
+            }
+
+            if (cursor.moveToFirst()) {
+                do {
+                    List<Object> entryList = new ArrayList<>();
+
+                    for (int i = 1; i < columnNames.length; i++) {
+                        entryList.add(getCursorObject(cursor, i));
+                    }
+
+                    Entry entry = new Entry(cursor.getLong(0), entryList, table);
+                    table.addEntry(entry);
+                } while (cursor.moveToFirst());
+            }
+
+            cursor.close();
+        }
+
+        return table;
+    }
+
+    /**
+     * Gives a String type from an integer type.
+     * @param type the integer type.
+     * @return     the String type.
+     */
+    private String getTypeFromInt(int type) {
+        switch (type) {
+            case 0:
+                return "NULL";
+            case 1:
+                return "INTEGER";
+            case 2:
+                return "REAL";
+            case 3:
+                return "TEXT";
+            default:
+                return "TEXT";
+        }
+    }
+
+    private Object getCursorObject(Cursor cursor, int colIndex) {
+        int type = cursor.getType(colIndex);
+
+        switch (type) {
+            case 0:
+                return null;
+            case 1:
+                return cursor.getInt(colIndex);
+            case 2:
+                return cursor.getDouble(colIndex);
+            case 3:
+                return cursor.getString(colIndex);
+            default:
+                return cursor.getString(colIndex);
+        }
+    }
+
     public String[] getTableNames(){
         String[] tableNames = new String[tableMap.size()];
         int count = 0;
