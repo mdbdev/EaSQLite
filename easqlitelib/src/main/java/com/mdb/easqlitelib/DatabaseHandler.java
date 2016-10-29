@@ -94,7 +94,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return executeWrite(createTableCommand);
         }
     }
+    // Create a table given a tableName and columnList where Pair first is column name and second is type
 
+    public boolean createTable(String tableName, Pair<String, String>[] columnList) {
+        boolean working = createTable(tableName);
+        for (Pair<String, String> p : columnList) {
+            try {
+                working &= addColumn(tableName, p.first, p.second);
+            } catch (Exception e) {
+                System.out.print(e);
+            }
+        }
+        return working;
+    }
+    // Delete table form a tableName
+    public boolean deleteTable(String tableName){
+        String deleteTableCommand = String.format(Strings.DROP_TABLE, tableName);
+        return executeWrite(deleteTableCommand);
+    }
     //Add single column
     public boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException{
         return colAdder(tableMap.get(tableName), columnName, type);
@@ -109,7 +126,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return success;
     }
-
+    //Change the table name
+    public boolean changeTableName(String tableName, String newName){
+        String changeTableNameCommand = Strings.ALTER_TABLE + tableName + Strings.RENAME_TO + newName;
+        return executeWrite(changeTableNameCommand);
+    }
     //Get the column names of the table
     public String[] getColumnNames(String tableName) {
         Table table = tableMap.get(tableName);
@@ -127,29 +148,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Delete entry from DB
-    public boolean deleteRow(String tableName, int id){
+    public List<Object> deleteRow(String tableName, int id){
+        String command = Strings.DELETE_FROM + tableName + Strings.WHERE + "id=" + id;
+        if (!executeWrite(command))
+            return null;
         Table table = tableMap.get(tableName);
-        return false;
-    }
-
-    //Delete first entry from DB
-    public boolean deleteFirstRow(String tableName){
-        return true;
-    }
-
-    //Delete last entry from DB
-    public boolean deleteLastRow(String tableName){
-        return true;
+        List<Object> entry = table.removeEntry(id);
+        return entry;
     }
 
     //Delete all entries from DB
     public boolean deleteAllRows(String tableName){
-        return true;
+        Table table = tableMap.get(tableName);
+        table.getEntries().clear();
+        String command = Strings.DELETE_FROM + tableName;
+        return executeWrite(command);
     }
 
     //Get entry by entry id returned by create row
     public List<Object> getRowById(String tableName, int id){
-        return tableMap.get(tableName).getEntries().get(id).data;
+        return new ArrayList<>(tableMap.get(tableName).getEntries().get(id).data);
+    }
+
+    //Get unordered array of the values under a column
+    public Object[] getColumn(String tableName, String colName) {
+        Table table = tableMap.get(tableName);
+        Map<Integer, Entry> entries = table.getEntries();
+        Object[] column = new Object[entries.size()];
+        int index = table.getColumnIndex(colName);
+        int pos = 0;
+        for (Entry e : entries.values()) {
+            column[pos] = e.data.get(index);
+            pos ++;
+        }
+        return column;
+    }
+
+    //Get number of columns in a table
+    public int getNumColumns(String tableName) {
+        Table table = tableMap.get(tableName);
+        return table.getColumnNames().length;
+    }
+
+    //Get number of columns in a table
+    public int getNumRows(String tableName) {
+        Table table = tableMap.get(tableName);
+        return table.getEntries().size();
     }
 
     //Create table to store custom objects
@@ -269,5 +313,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             default:
                 return cursor.getString(colIndex);
         }
+    }
+
+    public String[] getTableNames(){
+        String[] tableNames = new String[tableMap.size()];
+        int count = 0;
+        for(Map.Entry<String, Table> entry : tableMap.entrySet()){
+            tableNames[count] = entry.getKey();
+            count++;
+        }
+        return tableNames;
     }
 }
