@@ -138,6 +138,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Add entry to SQLite database
+    //TODO: change to return int id
     public boolean addRow(String tableName, Pair<String, String>[] entries) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();

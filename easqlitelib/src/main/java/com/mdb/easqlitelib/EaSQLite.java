@@ -113,27 +113,54 @@ public class EaSQLite {
         return dbHandler.getColumn(tableName, columnName);
     }
 
-    //Get the columns of the table corresponding to table name
+    /**
+     * Gets an in-order Array of column names in order from a table
+     * @param tableName the name of the table to retrieve from
+     * @return          an Array of strings of the column names in the table,
+     *                  in order
+     */
     public static String[] getColumnNames(String tableName) {
         return dbHandler.getColumnNames(tableName);
     }
 
-    //Add entry to SQLite database
-    public static boolean addRow(String tableName, Pair<String, String>[] entries) throws InvalidTypeException {
+    /**
+     * Adds a new entry to a table, with an array of column names to entry value
+     * @param tableName the name of the table to be added to
+     * @param entries   the array of Pairs, formatted such that first is the column
+     *                  name and second is the entry value for that column
+     * @return          boolean indicating success of the addRow
+     */
+    public static boolean addRow(String tableName, Pair<String, String>[] entries) {
         return dbHandler.addRow(tableName, entries);
     }
 
-    //Delete entry from DB
+    /**
+     * Deletes an entry from a table with id, returns the values of entry
+     * @param tableName name of the table from which the entry is removed
+     * @param id        id of the entry, given by the addRow method
+     * @return          List with values of entry in order
+     */
     public static List<Object> deleteRow(String tableName, int id) {
         return dbHandler.deleteRow(tableName, id);
     }
 
-    //Delete all entries from DB
+    /**
+     * Deletes all entries in a table
+     * @param tableName name of table to delete all entries from
+     * @return          success of deletion
+     */
     public static boolean deleteAllRows(String tableName) {
         return dbHandler.deleteAllRows(tableName);
     }
 
-    //Get entry by entry id returned by create row
+    /**
+     * Retrieves the values of an entry from a table with values in order
+     * @param tableName the name of the table to retrieve entry from
+     * @param id        the id of the entry to retrieve, given by the addRow
+     *                  method
+     * @return          a List of objects which are the values of the entry
+     *                  in order
+     */
     public static List<Object> getRowById(String tableName, int id) {
         return dbHandler.getRowById(tableName, id);
     }
