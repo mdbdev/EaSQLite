@@ -197,6 +197,7 @@ public class EaSQLite {
         return dbHandler.getRowById(tableName, id);
     }
 
+    /**
     //Create table to store custom objects
     public static String[] createTableFromObject(Object obj) {
         return null;
@@ -205,5 +206,5 @@ public class EaSQLite {
     //Alternate method with name of object
     public static String[] createTableFromObject(String tableName, Object obj) {
         return null;
-    }
+    } */
 }
