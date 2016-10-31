@@ -88,27 +88,59 @@ public class EaSQLite {
         return dbHandler.changeTableName(currentName, newName);
     }
 
-    // Get the number of columns for the table
+    /**
+     * Returns the number of columns in a table specified by the table name.
+     * @param tableName the name of the table used to identify the table to quantify columns.
+     * @return          the number of columns of the specified table.
+     */
     public static int getNumColumns(String tableName) {
         return dbHandler.getNumColumns(tableName);
     }
 
-    // Get the number of rows for the table
+    /**
+     * Returns the number of rows in a table specified by the table name.
+     * @param tableName the name of the table used to identify the table to quantify rows.
+     * @return          the number of columns of the specified table.
+     */
     public static int getNumRows(String tableName) {
         return dbHandler.getNumRows(tableName);
     }
 
     //Add single column
+
+    /**
+     * Adds a single column to the table specified by a table name. The column should have a
+     * specified column name and type.
+     * @param tableName  the table name used to identify the table to add the column to.
+     * @param columnName the name of the column to be added.
+     * @param type       the type of the column to be added. The type can be: "INTEGER", "TEXT",
+     *                   or "REAL."
+     * @return           a boolean flag indicating success of the addition.
+     * @throws InvalidTypeException
+     */
     public static boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException {
         return dbHandler.addColumn(tableName, columnName, type);
     }
 
-    //Add multiple columns with an array of names
+    /**
+     * Adds multiple columns to the table specified by an array of Pairs with the first
+     * entry being a column name, and second entry being the type.
+     * @param tableName the table name used to identify the table to add columns to.
+     * @param columns   an array of Pairs that hold column names and column types.
+     * @return          a boolean flag indicating success of the additions.
+     * @throws InvalidTypeException
+     */
     public static boolean addColumns(String tableName, Pair<String, String>[] columns) throws InvalidTypeException {
         return dbHandler.addColumns(tableName, columns);
     }
 
-    // Retrieve a column as an array of objects
+    /**
+     * Retrieves a column with a specified column name from a table specified by a certain
+     * table name. The column is represented by an array of Objects.
+     * @param tableName  the table name used to identify the table to get the column from.
+     * @param columnName the column name used to identify the column to return.
+     * @return           an Object array representing a column in the Table.
+     */
     public static Object[] getColumn(String tableName, String columnName) {
         return dbHandler.getColumn(tableName, columnName);
     }
