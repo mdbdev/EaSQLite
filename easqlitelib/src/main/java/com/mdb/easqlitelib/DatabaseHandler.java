@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Pair;
 
+import com.mdb.easqlitelib.exceptions.InvalidInputException;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 import com.mdb.easqlitelib.structures.Entry;
 import com.mdb.easqlitelib.structures.Table;
@@ -58,7 +59,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Loads up tableMap with all the tables in the database.
      */
-    public void initializeAllTables() throws InvalidTypeException {
+    public void initializeAllTables() throws InvalidTypeException, InvalidInputException {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> tableNames = getLocalStorageTableNames(db);
 
@@ -83,8 +84,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Create a table from a tableName
-    public boolean createTable(String tableName) {
+    public boolean createTable(String tableName) throws InvalidInputException {
         Table table = new Table(tableName);
+        if (tableName.contains(" ")) {
+            throw new InvalidInputException("Table name cannot have spaces");
+        }
         String createTableCommand = String.format(Strings.CREATE_TABLE, tableName) + Strings.SPACE
                     + Strings.ID_CONDITION;
         if (tableMap.containsKey(tableName)) {
@@ -96,7 +100,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     // Create a table given a tableName and columnList where Pair first is column name and second is type
 
-    public boolean createTable(String tableName, Pair<String, String>[] columnList) {
+    public boolean createTable(String tableName, Pair<String, String>[] columnList) throws InvalidInputException {
         boolean working = createTable(tableName);
         for (Pair<String, String> p : columnList) {
             try {
@@ -113,13 +117,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return executeWrite(deleteTableCommand);
     }
     //Add single column
-    public boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException{
-        return colAdder(tableMap.get(tableName), columnName, type);
+    public boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException, InvalidInputException{
+        Table table = tableMap.get(tableName);
+        if (table == null) return false;
+        return colAdder(table, columnName, type);
     }
 
     //Add multiple columns with an array of names
-    public boolean addColumns(String tableName, Pair<String, String>[] columns) throws InvalidTypeException{
+    public boolean addColumns(String tableName, Pair<String, String>[] columns) throws InvalidTypeException, InvalidInputException{
         Table table = tableMap.get(tableName);
+        if (table == null) return false;
         boolean success = true;
         for(Pair<String, String> p : columns){
             success &= colAdder(table, p.first, p.second);
@@ -127,38 +134,43 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return success;
     }
     //Change the table name
-    public boolean changeTableName(String tableName, String newName){
+    public boolean changeTableName(String tableName, String newName) throws InvalidInputException {
+        if (newName.contains(" ")) {
+            throw new InvalidInputException("New table name cannot contain space");
+        }
+        if (tableMap.get(tableName) == null) return false;
         String changeTableNameCommand = Strings.ALTER_TABLE + tableName + Strings.RENAME_TO + newName;
         return executeWrite(changeTableNameCommand);
     }
     //Get the column names of the table
     public List<String> getColumnNames(String tableName) {
         Table table = tableMap.get(tableName);
+        if (table == null) return null;
         return table.getColumnNames();
     }
 
     //Add entry to SQLite database
-    //TODO: change to return int id
-    public boolean addRow(String tableName, Pair<String, String>[] entries) {
+    public int addRow(String tableName, Pair<String, String>[] entries) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         Table table = tableMap.get(tableName);
+        if (table == null) return -1;
         List<Object> list = new ArrayList<>(entries.length);
         for (Pair<String, String> p : entries) {
             cv.put(p.first, p.second);
             int i = table.getColumnIndex(p.first);
-            if (i < 0) return false;
+            if (i < 0) return -1;
             list.add(i, p.second);
         }
         long id = db.insert(tableName, null, cv);
-        if (id < 0) return false;
+        if (id < 0) return -1;
         Entry entry = new Entry(id, list, table);
         try {
             table.addEntry(entry);
         } catch (InvalidTypeException e) {
-            return false;
+            return -1;
         }
-        return true;
+        return (int)id;
     }
 
     //Delete entry from DB
@@ -167,6 +179,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (!executeWrite(command))
             return null;
         Table table = tableMap.get(tableName);
+        if (table == null) return null;
         List<Object> entry = table.removeEntry(id);
         return entry;
     }
@@ -174,6 +187,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //Delete all entries from DB
     public boolean deleteAllRows(String tableName){
         Table table = tableMap.get(tableName);
+        if (table == null) return false;
         table.getEntries().clear();
         String command = Strings.DELETE_FROM + tableName;
         return executeWrite(command);
@@ -181,12 +195,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //Get entry by entry id returned by create row
     public List<Object> getRowById(String tableName, int id){
-        return new ArrayList<>(tableMap.get(tableName).getEntries().get(id).data);
+        Table table = tableMap.get(tableName);
+        if (table == null) return null;
+        return new ArrayList<>(table.getEntries().get(id).data);
     }
 
     //Get unordered array of the values under a column
     public List<Object> getColumn(String tableName, String colName) {
         Table table = tableMap.get(tableName);
+        if (table == null) return null;
         Map<Long, Entry> entries = table.getEntries();
         List<Object> column = new ArrayList<>(entries.size());
         int index = table.getColumnIndex(colName);
@@ -201,12 +218,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //Get number of columns in a table
     public int getNumColumns(String tableName) {
         Table table = tableMap.get(tableName);
+        if (table == null) return -1;
         return table.getColumnNames().size();
     }
 
     //Get number of columns in a table
     public int getNumRows(String tableName) {
         Table table = tableMap.get(tableName);
+        if (table == null) return -1;
         return table.getEntries().size();
     }
 
@@ -221,7 +240,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Helper function for adding columns
-    private boolean colAdder(Table table, String columnName, String type) throws InvalidTypeException{
+    private boolean colAdder(Table table, String columnName, String type) throws InvalidTypeException, InvalidInputException{
         String command = table.addColumn(columnName, type);
         return executeWrite(command);
     }
@@ -243,10 +262,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     tableNames.add(name);
                 } while (cursor.moveToFirst());
             }
-
             cursor.close();
         }
-
         return tableNames;
     }
 
@@ -256,7 +273,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param db        the SQLiteDatabase used.
      * @return          a table object representation of the locally stored table.
      */
-    private Table createTableFromLocalStorage(String tableName, SQLiteDatabase db) throws InvalidTypeException {
+    private Table createTableFromLocalStorage(String tableName, SQLiteDatabase db) throws InvalidTypeException, InvalidInputException {
         String query = String.format(Strings.SELECT_ALL, tableName);
         Cursor cursor = db.rawQuery(query, null);
         Table table = new Table(tableName);
@@ -269,7 +286,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 } catch (InvalidTypeException e) {
                     return new Table(tableName); // Should never reach here.
                 }
-
                 columnIndex++;
             }
 
@@ -285,10 +301,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     table.addEntry(entry);
                 } while (cursor.moveToFirst());
             }
-
             cursor.close();
         }
-
         return table;
     }
 

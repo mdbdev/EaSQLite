@@ -1,6 +1,7 @@
 package com.mdb.easqlitelib.structures;
 
 import com.mdb.easqlitelib.Strings;
+import com.mdb.easqlitelib.exceptions.InvalidInputException;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 
 import java.util.ArrayList;
@@ -48,7 +49,12 @@ public class Table {
      * @param columnName the name of the column to be added.
      * @param type the type of the column to be added.
      */
-    public String addColumn(String columnName, String type) throws InvalidTypeException {
+    public String addColumn(String columnName, String type) throws InvalidTypeException, InvalidInputException {
+        if (columnName.contains(" ")) {
+            throw new InvalidInputException("Column name cannot contain space");
+        } else if (type.contains(" ")) {
+            throw new InvalidInputException("Type cannot contain space");
+        }
         Column column = new Column(columnName, type);
         columns.put(columnName, column);
         schema.add(type);

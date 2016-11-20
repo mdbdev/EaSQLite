@@ -3,6 +3,7 @@ package com.mdb.easqlitelib;
 import android.content.Context;
 import android.util.Pair;
 
+import com.mdb.easqlitelib.exceptions.InvalidInputException;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class EaSQLite {
      *
      * @param context the context provided by the Application.
      */
-    public static void initialize(Context context) throws InvalidTypeException {
+    public static void initialize(Context context) throws InvalidTypeException, InvalidInputException {
         dbHandler = new DatabaseHandler(context);
         dbHandler.initializeAllTables();
     }
@@ -30,7 +31,7 @@ public class EaSQLite {
      * @param tableName name the new table will have.
      * @return          boolean flag indicating the success of table creation.
      */
-    public static boolean createTable(String tableName) {
+    public static boolean createTable(String tableName) throws InvalidInputException {
         return dbHandler.createTable(tableName);
     }
 
@@ -42,7 +43,7 @@ public class EaSQLite {
      * @param columnList the list of pairs where each Pair holds the name, type of the column.
      * @return           boolean flag indicating the success of table creation.
      */
-    public boolean createTable(String tableName, Pair<String, String>[] columnList) {
+    public boolean createTable(String tableName, Pair<String, String>[] columnList) throws InvalidInputException {
         return dbHandler.createTable(tableName, columnList);
     }
 
@@ -59,7 +60,7 @@ public class EaSQLite {
 
     /**
      * Retrieves all the table names currently stored in the DB.
-     * @return an array of Strings representing the table names in the DB.
+     * @return a List of Strings representing the table names in the DB.
      */
     public static List<String> getTableNames() {
         return dbHandler.getTableNames();
@@ -84,12 +85,12 @@ public class EaSQLite {
      * @return            a boolean flag indicating the success of the change. Will return false
      *                    if a table with currentName cannot be found.
      */
-    public static boolean changeTableName(String currentName, String newName) {
+    public static boolean changeTableName(String currentName, String newName) throws InvalidInputException {
         return dbHandler.changeTableName(currentName, newName);
     }
 
     /**
-     * Returns the number of columns in a table specified by the table name.
+     * Returns the number of columns in a table specified by the table name. -1 if table not found.
      * @param tableName the name of the table used to identify the table to quantify columns.
      * @return          the number of columns of the specified table.
      */
@@ -98,7 +99,7 @@ public class EaSQLite {
     }
 
     /**
-     * Returns the number of rows in a table specified by the table name.
+     * Returns the number of rows in a table specified by the table name. -1 if table not found.
      * @param tableName the name of the table used to identify the table to quantify rows.
      * @return          the number of columns of the specified table.
      */
@@ -118,7 +119,7 @@ public class EaSQLite {
      * @return           a boolean flag indicating success of the addition.
      * @throws InvalidTypeException
      */
-    public static boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException {
+    public static boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException, InvalidInputException {
         return dbHandler.addColumn(tableName, columnName, type);
     }
 
@@ -130,7 +131,7 @@ public class EaSQLite {
      * @return          a boolean flag indicating success of the additions.
      * @throws InvalidTypeException
      */
-    public static boolean addColumns(String tableName, Pair<String, String>[] columns) throws InvalidTypeException {
+    public static boolean addColumns(String tableName, Pair<String, String>[] columns) throws InvalidTypeException, InvalidInputException {
         return dbHandler.addColumns(tableName, columns);
     }
 
@@ -139,7 +140,7 @@ public class EaSQLite {
      * table name. The column is represented by an array of Objects.
      * @param tableName  the table name used to identify the table to get the column from.
      * @param columnName the column name used to identify the column to return.
-     * @return           an Object array representing a column in the Table.
+     * @return           a List of objects representing a column in the Table.
      */
     public static List<Object> getColumn(String tableName, String columnName) {
         return dbHandler.getColumn(tableName, columnName);
@@ -148,7 +149,7 @@ public class EaSQLite {
     /**
      * Gets an in-order Array of column names in order from a table
      * @param tableName the name of the table to retrieve from
-     * @return          an Array of strings of the column names in the table,
+     * @return          a List of strings of the column names in the table,
      *                  in order
      */
     public static List<String> getColumnNames(String tableName) {
@@ -160,9 +161,9 @@ public class EaSQLite {
      * @param tableName the name of the table to be added to
      * @param entries   the array of Pairs, formatted such that first is the column
      *                  name and second is the entry value for that column
-     * @return          boolean indicating success of the addRow
+     * @return          id of entry as integer
      */
-    public static boolean addRow(String tableName, Pair<String, String>[] entries) {
+    public static int addRow(String tableName, Pair<String, String>[] entries) {
         return dbHandler.addRow(tableName, entries);
     }
 
