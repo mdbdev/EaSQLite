@@ -42,7 +42,7 @@ public class EaSQLite {
     /**
      * Creates a table given a table name and a list of Pairs
      * holding column names and column types. Types can be any of the following:
-     * "INTEGER", "TEXT", "REAL".
+     * "INTEGER", "TEXT", "REAL", "BLOB".
      * @param tableName  the name of the table to create.
      * @param columnList the list of pairs where each Pair holds the name, type of the column.
      * @return           boolean flag indicating the success of table creation.
