@@ -19,6 +19,8 @@ public class EaSQLite {
      * in local storage.
      *
      * @param context the context provided by the Application.
+     * @throws InvalidTypeException
+     * @throws InvalidInputException
      */
     public static void initialize(Context context) throws InvalidTypeException, InvalidInputException {
         dbHandler = new DatabaseHandler(context);
@@ -30,6 +32,7 @@ public class EaSQLite {
      * nor rows initially.
      * @param tableName name the new table will have.
      * @return          boolean flag indicating the success of table creation.
+     * @throws InvalidInputException
      */
     public static boolean createTable(String tableName) throws InvalidInputException {
         return dbHandler.createTable(tableName);
@@ -42,6 +45,7 @@ public class EaSQLite {
      * @param tableName  the name of the table to create.
      * @param columnList the list of pairs where each Pair holds the name, type of the column.
      * @return           boolean flag indicating the success of table creation.
+     * @throws InvalidInputException
      */
     public boolean createTable(String tableName, Pair<String, String>[] columnList) throws InvalidInputException {
         return dbHandler.createTable(tableName, columnList);
@@ -84,6 +88,7 @@ public class EaSQLite {
      * @param newName     the name that the table will change to.
      * @return            a boolean flag indicating the success of the change. Will return false
      *                    if a table with currentName cannot be found.
+     * @throws InvalidInputException
      */
     public static boolean changeTableName(String currentName, String newName) throws InvalidInputException {
         return dbHandler.changeTableName(currentName, newName);
@@ -118,6 +123,7 @@ public class EaSQLite {
      *                   or "REAL."
      * @return           a boolean flag indicating success of the addition.
      * @throws InvalidTypeException
+     * @throws InvalidInputException
      */
     public static boolean addColumn(String tableName, String columnName, String type) throws InvalidTypeException, InvalidInputException {
         return dbHandler.addColumn(tableName, columnName, type);
@@ -130,6 +136,7 @@ public class EaSQLite {
      * @param columns   an array of Pairs that hold column names and column types.
      * @return          a boolean flag indicating success of the additions.
      * @throws InvalidTypeException
+     * @throws InvalidInputException
      */
     public static boolean addColumns(String tableName, Pair<String, String>[] columns) throws InvalidTypeException, InvalidInputException {
         return dbHandler.addColumns(tableName, columns);
@@ -137,7 +144,7 @@ public class EaSQLite {
 
     /**
      * Retrieves a column with a specified column name from a table specified by a certain
-     * table name. The column is represented by an array of Objects.
+     * table name. The column is represented by a list of Objects.
      * @param tableName  the table name used to identify the table to get the column from.
      * @param columnName the column name used to identify the column to return.
      * @return           a List of objects representing a column in the Table.
@@ -147,7 +154,7 @@ public class EaSQLite {
     }
 
     /**
-     * Gets an in-order Array of column names in order from a table
+     * Gets an in-order List of column names in order from a table
      * @param tableName the name of the table to retrieve from
      * @return          a List of strings of the column names in the table,
      *                  in order
