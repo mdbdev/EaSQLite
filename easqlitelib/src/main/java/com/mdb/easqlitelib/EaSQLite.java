@@ -61,7 +61,7 @@ public class EaSQLite {
      * Retrieves all the table names currently stored in the DB.
      * @return an array of Strings representing the table names in the DB.
      */
-    public static String[] getTableNames() {
+    public static List<String> getTableNames() {
         return dbHandler.getTableNames();
     }
 
@@ -141,7 +141,7 @@ public class EaSQLite {
      * @param columnName the column name used to identify the column to return.
      * @return           an Object array representing a column in the Table.
      */
-    public static Object[] getColumn(String tableName, String columnName) {
+    public static List<Object> getColumn(String tableName, String columnName) {
         return dbHandler.getColumn(tableName, columnName);
     }
 
@@ -151,7 +151,7 @@ public class EaSQLite {
      * @return          an Array of strings of the column names in the table,
      *                  in order
      */
-    public static String[] getColumnNames(String tableName) {
+    public static List<String> getColumnNames(String tableName) {
         return dbHandler.getColumnNames(tableName);
     }
 

@@ -132,7 +132,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return executeWrite(changeTableNameCommand);
     }
     //Get the column names of the table
-    public String[] getColumnNames(String tableName) {
+    public List<String> getColumnNames(String tableName) {
         Table table = tableMap.get(tableName);
         return table.getColumnNames();
     }
@@ -185,14 +185,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //Get unordered array of the values under a column
-    public Object[] getColumn(String tableName, String colName) {
+    public List<Object> getColumn(String tableName, String colName) {
         Table table = tableMap.get(tableName);
         Map<Long, Entry> entries = table.getEntries();
-        Object[] column = new Object[entries.size()];
+        List<Object> column = new ArrayList<>(entries.size());
         int index = table.getColumnIndex(colName);
         int pos = 0;
         for (Entry e : entries.values()) {
-            column[pos] = e.data.get(index);
+            column.add(pos, e.data.get(index));
             pos ++;
         }
         return column;
@@ -201,7 +201,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //Get number of columns in a table
     public int getNumColumns(String tableName) {
         Table table = tableMap.get(tableName);
-        return table.getColumnNames().length;
+        return table.getColumnNames().size();
     }
 
     //Get number of columns in a table
@@ -329,11 +329,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public String[] getTableNames(){
-        String[] tableNames = new String[tableMap.size()];
+    public List<String> getTableNames(){
+        List<String> tableNames = new ArrayList<>(tableMap.size());
         int count = 0;
         for(Map.Entry<String, Table> entry : tableMap.entrySet()){
-            tableNames[count] = entry.getKey();
+            tableNames.add(count, entry.getKey());
             count++;
         }
         return tableNames;

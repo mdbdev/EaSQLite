@@ -106,7 +106,7 @@ public class Table {
      * Retrieves all the column names of the table in order.
      * @return String array of all the column names.
      */
-    public String[] getColumnNames() {
-        return (String[])(columnList.toArray());
+    public List<String> getColumnNames() {
+        return columnList;
     }
 }
