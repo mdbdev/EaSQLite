@@ -6,6 +6,7 @@ import android.util.Pair;
 import com.mdb.easqlitelib.exceptions.InvalidInputException;
 import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -22,7 +23,7 @@ public class EaSQLite {
      * @throws InvalidTypeException
      * @throws InvalidInputException
      */
-    public static void initialize(Context context) throws InvalidTypeException, InvalidInputException {
+    public static void initialize(Context context) throws InvalidTypeException, InvalidInputException, IOException, ClassNotFoundException {
         dbHandler = new DatabaseHandler(context);
         dbHandler.initializeAllTables();
     }
@@ -170,7 +171,7 @@ public class EaSQLite {
      *                  name and second is the entry value for that column
      * @return          id of entry as integer
      */
-    public static int addRow(String tableName, Pair<String, String>[] entries) {
+    public static int addRow(String tableName, Pair<String, Object>[] entries) throws IOException {
         return dbHandler.addRow(tableName, entries);
     }
 

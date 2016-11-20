@@ -13,6 +13,11 @@ import com.mdb.easqlitelib.exceptions.InvalidTypeException;
 import com.mdb.easqlitelib.structures.Entry;
 import com.mdb.easqlitelib.structures.Table;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,7 +64,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Loads up tableMap with all the tables in the database.
      */
-    public void initializeAllTables() throws InvalidTypeException, InvalidInputException {
+    public void initializeAllTables() throws InvalidTypeException, InvalidInputException, IOException, ClassNotFoundException {
         SQLiteDatabase db = this.getReadableDatabase();
         List<String> tableNames = getLocalStorageTableNames(db);
 
@@ -149,7 +154,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return table.getColumnNames();
     }
 
-    //Add entry to SQLite database
+    /*//Add entry to SQLite database
     public int addRow(String tableName, Pair<String, String>[] entries) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -158,6 +163,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List<Object> list = new ArrayList<>(entries.length);
         for (Pair<String, String> p : entries) {
             cv.put(p.first, p.second);
+            int i = table.getColumnIndex(p.first);
+            if (i < 0) return -1;
+            list.add(i, p.second);
+        }
+        long id = db.insert(tableName, null, cv);
+        if (id < 0) return -1;
+        Entry entry = new Entry(id, list, table);
+        try {
+            table.addEntry(entry);
+        } catch (InvalidTypeException e) {
+            return -1;
+        }
+        return (int)id;
+    }*/
+
+    //Add entry to SQLite database
+    public int addRow(String tableName, Pair<String, Object>[] entries) throws IOException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        Table table = tableMap.get(tableName);
+        if (table == null) return -1;
+        List<Object> list = new ArrayList<>(entries.length);
+        for (Pair<String, Object> p : entries) {
+            cv.put(p.first, serialize(p.second));
             int i = table.getColumnIndex(p.first);
             if (i < 0) return -1;
             list.add(i, p.second);
@@ -273,7 +302,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param db        the SQLiteDatabase used.
      * @return          a table object representation of the locally stored table.
      */
-    private Table createTableFromLocalStorage(String tableName, SQLiteDatabase db) throws InvalidTypeException, InvalidInputException {
+    private Table createTableFromLocalStorage(String tableName, SQLiteDatabase db) throws InvalidTypeException, InvalidInputException, IOException, ClassNotFoundException {
         String query = String.format(Strings.SELECT_ALL, tableName);
         Cursor cursor = db.rawQuery(query, null);
         Table table = new Table(tableName);
@@ -326,7 +355,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    private Object getCursorObject(Cursor cursor, int colIndex) {
+    private Object getCursorObject(Cursor cursor, int colIndex) throws IOException, ClassNotFoundException {
         int type = cursor.getType(colIndex);
 
         switch (type) {
@@ -338,9 +367,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 return cursor.getDouble(colIndex);
             case 3:
                 return cursor.getString(colIndex);
+            case 4:
+                return deserialize(cursor.getBlob(colIndex));
             default:
                 return cursor.getString(colIndex);
         }
+    }
+
+    public static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream b = new ByteArrayInputStream(bytes);
+        ObjectInputStream o = new ObjectInputStream(b);
+        return o.readObject();
+    }
+
+    public static byte[] serialize(Object obj) throws IOException {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        ObjectOutputStream o = new ObjectOutputStream(b);
+        o.writeObject(obj);
+        return b.toByteArray();
     }
 
     public List<String> getTableNames(){
