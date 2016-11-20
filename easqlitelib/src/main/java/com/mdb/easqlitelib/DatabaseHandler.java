@@ -154,30 +154,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return table.getColumnNames();
     }
 
-    /*//Add entry to SQLite database
-    public int addRow(String tableName, Pair<String, String>[] entries) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        Table table = tableMap.get(tableName);
-        if (table == null) return -1;
-        List<Object> list = new ArrayList<>(entries.length);
-        for (Pair<String, String> p : entries) {
-            cv.put(p.first, p.second);
-            int i = table.getColumnIndex(p.first);
-            if (i < 0) return -1;
-            list.add(i, p.second);
-        }
-        long id = db.insert(tableName, null, cv);
-        if (id < 0) return -1;
-        Entry entry = new Entry(id, list, table);
-        try {
-            table.addEntry(entry);
-        } catch (InvalidTypeException e) {
-            return -1;
-        }
-        return (int)id;
-    }*/
-
     //Add entry to SQLite database
     public int addRow(String tableName, Pair<String, Object>[] entries) throws IOException {
         SQLiteDatabase db = this.getWritableDatabase();
