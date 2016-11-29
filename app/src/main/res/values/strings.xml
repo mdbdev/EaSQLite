@@ -8,4 +8,6 @@
     <string name="nba_player_btn">NBA</string>
     <string name="nhl_player_btn">NHL</string>
     <string name="view_players_txt">Click a button to view players stored in the DB!</string>
+    <string name="title_activity_view_entries">ViewEntriesActivity</string>
+    <string name="title_activity_add">AddActivity</string>
 </resources>
