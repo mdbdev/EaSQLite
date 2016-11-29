@@ -24,6 +24,41 @@ try {
 ```
 The various Exceptions should be caught and handled notifying the user that the Database contains invalid information (this occurs if certain Integrity Constraints are invalid for some reason). This commonly occurs when the developer updates the database, but the app contains existing information, in which case the data should be cleaned.
 
+You can also get all the table names using: `EaSQLite.getTableNames()`, and get column names using: `EaSQLite.getColumnNames(tableName)`. There are many other useful methods in the Javadoc. To return back to the Demo App, if we wanted to display all the information in a certain table, we can simply grab a certain column and put it in a ListView:
+```java
+List<Object> playerNames = EaSQLite.getColumn(tableName, "name");
+List<Object> playerAges = EaSQLite.getColumn(tableName, "age");
+List<Object> playerHeights = EaSQLite.getColumn(tableName, "height");
+List<Object> playerTeams = EaSQLite.getColumn(tableName, "team");
+```
+
+Finally to actually create and add entries, you can use the `addRow` method as such:
+```java
+String name = nameField.getText().toString();
+int age = Integer.parseInt(ageField.getText().toString());
+String height = heightField.getText().toString();
+String team = teamField.getText().toString();
+Object[] entries = {name, age, height, team};
+
+List<String> colNames = EaSQLite.getColumnNames(league);
+Pair<String, Object>[] row = new Pair[colNames.size()];
+
+int i = 0;
+for (String column : colNames) {
+    row[i] = new Pair<String, Object>(column, entries[i]);
+    i++;
+}
+
+try {
+    EaSQLite.addRow(league, row);
+} catch (IOException e) {
+    Toast.makeText(AddActivity.this, "Addition to DB failed", Toast.LENGTH_SHORT).show();
+}
+```
+Note that `addRow` throws an Exception if the addition is invalid. Thus this needs to be caught and the user must be notified accordingly. Also note for row creation, an array of Pairs is passed in to specify the column name and row object. This way, order does not have to be preserved.
+
+Because of the simple static class EaSQLite, very few lines are needed to undergo simple tasks in a database. One big thing to note is that the user should be notified when EaSQLite throws an Exception because it is most likely because some Integrity Constraint is violated or because of invalid names/types.
+
 ## Requirements
 Android 2.2+
 
