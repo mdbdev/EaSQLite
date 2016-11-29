@@ -8,7 +8,7 @@ EaSQLite is very easy to use. There is a static class `EaSQLite` that contains a
 
 ### Startup
 In order to first initialize the database, in the `onCreate` of your `MainActivity`, simply add a call `EaSQLite.initialize(getApplicationContext())`. For instance, in the repository there is a Demo App that contains three tables in the database: nfl, nba, and nhl. Each table has columns describing attributes of several players in the respective leagues such as name, age, height, and team. In the `onCreate` of our `IntroActivity` we have:
-```
+```java
 try {
     EaSQLite.initialize(getApplicationContext());
 } catch (InvalidTypeException|InvalidInputException|IOException|ClassNotFoundException e) {
