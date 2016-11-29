@@ -3,4 +3,9 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_intro_activity">Welcome to the EaSQLite Demo!</string>
+    <string name="nfl_player_btn">NFL</string>
+    <string name="nba_player_btn">NBA</string>
+    <string name="nhl_player_btn">NHL</string>
+    <string name="view_players_txt">Click a button to view players stored in the DB!</string>
 </resources>
