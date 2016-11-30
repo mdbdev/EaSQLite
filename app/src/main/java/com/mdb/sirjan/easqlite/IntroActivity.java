@@ -33,6 +33,22 @@ public class IntroActivity extends AppCompatActivity {
                         }
                     }).show();
         }
+        if (EaSQLite.getTableNames() == null || EaSQLite.getTableNames().size() < 3) {
+            try {
+                EaSQLite.createTable("nfl");
+                EaSQLite.createTable("nba");
+                EaSQLite.createTable("nhl");
+            } catch (InvalidInputException e) {
+                new AlertDialog.Builder(IntroActivity.this)
+                        .setTitle("Tables not Created")
+                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).show();
+            }
+        }
 
         Button nflBtn = (Button) findViewById(R.id.btn_nfl);
         Button nbaBtn = (Button) findViewById(R.id.btn_nba);

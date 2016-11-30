@@ -365,10 +365,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<String> getTableNames(){
         List<String> tableNames = new ArrayList<>(tableMap.size());
-        int count = 0;
-        for(Map.Entry<String, Table> entry : tableMap.entrySet()){
-            tableNames.add(count, entry.getKey());
-            count++;
+        for (String s : tableMap.keySet()) {
+            tableNames.add(s);
         }
         return tableNames;
     }
