@@ -2,6 +2,7 @@ package com.mdb.sirjan.easqlite;
 
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -70,6 +71,7 @@ public class ViewEntriesActivity extends AppCompatActivity {
     private TextView getHeaderView(String leagueName) {
         TextView view = new TextView(getApplicationContext());
         view.setText(leagueName);
+        view.setTextColor(Color.BLACK);
         return view;
     }
 
