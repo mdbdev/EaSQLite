@@ -26,18 +26,21 @@ public class ViewEntriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_entries);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Intent intent = getIntent();
+        final String tableName = intent.getStringExtra(LEAGUE_KEY);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), AddActivity.class);
+                    intent.putExtra(ViewEntriesActivity.LEAGUE_KEY, tableName);
+                    startActivity(intent);
                 }
             });
         }
 
-        Intent intent = getIntent();
-        String tableName = intent.getStringExtra(LEAGUE_KEY);
         setTitle("League: " + tableName);
         displayTableContents(tableName);
     }
@@ -124,12 +127,12 @@ public class ViewEntriesActivity extends AppCompatActivity {
 
             @Override
             public int getViewTypeCount() {
-                return 0;
+                return 1;
             }
 
             @Override
             public boolean isEmpty() {
-                return false;
+                return entries.size() == 0;
             }
         };
     }
