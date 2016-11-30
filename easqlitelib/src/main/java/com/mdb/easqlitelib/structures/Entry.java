@@ -17,7 +17,7 @@ public class Entry {
     public Entry(long id, List<Object> list, Table table) {
         this.id = id;
         this.table = table;
-        data = new ArrayList<Object>(list);
+        data = new ArrayList<>(list);
     }
 
     private String classType(Object o) {
@@ -45,7 +45,7 @@ public class Entry {
         }
     }
 
-    public boolean verifyFields(){
+    /*public boolean verifyFields(){
         for (int i = 0; i < data.size(); i++) {
             String type = classType(data.get(i));
             if (type == null || !type.equals(table.getSchema().get(i))) {
@@ -53,6 +53,6 @@ public class Entry {
             }
         }
         return true;
-    }
+    }*/
 
 }

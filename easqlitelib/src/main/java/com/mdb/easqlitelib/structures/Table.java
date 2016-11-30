@@ -73,12 +73,8 @@ public class Table {
      * that the entry is valid in that its types match the schema.
      * @param entry the entry to be added to the table.
      */
-    public void addEntry(Entry entry) throws InvalidTypeException {
-        if (entry.verifyFields()) {
-            entries.put(entry.id, entry);
-        } else {
-            throw new InvalidTypeException("Entry insertion is invalid");
-        }
+    public void addEntry(Entry entry) {
+        entries.put(entry.id, entry);
     }
 
     public Map<Long, Entry> getEntries(){
