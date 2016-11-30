@@ -14,6 +14,13 @@ public class EaSQLite {
     // Static DatabaseHandler for managing database transactions.
     private static DatabaseHandler dbHandler;
 
+    // Constants for all possible types
+    public static final String NULL = "NULL";
+    public static final String INTEGER = "INTEGER";
+    public static final String REAL = "REAL";
+    public static final String TEXT = "TEXT";
+    public static final String BLOB = "BLOB";
+
     /**
      * Initializes EaSQLite by setting up a database handler with a
      * context from the Application. It will initialize all tables already
@@ -22,6 +29,8 @@ public class EaSQLite {
      * @param context the context provided by the Application.
      * @throws InvalidTypeException
      * @throws InvalidInputException
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
     public static void initialize(Context context) throws InvalidTypeException, InvalidInputException, IOException, ClassNotFoundException {
         dbHandler = new DatabaseHandler(context);
@@ -120,8 +129,8 @@ public class EaSQLite {
      * specified column name and type.
      * @param tableName  the table name used to identify the table to add the column to.
      * @param columnName the name of the column to be added.
-     * @param type       the type of the column to be added. The type can be: "INTEGER", "TEXT",
-     *                   or "REAL."
+     * @param type       the type of the column to be added. The type can be chosen from the
+     *                   constant EaSQLite type fields
      * @return           a boolean flag indicating success of the addition.
      * @throws InvalidTypeException
      * @throws InvalidInputException

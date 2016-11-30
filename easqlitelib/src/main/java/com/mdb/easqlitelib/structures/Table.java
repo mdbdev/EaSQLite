@@ -47,7 +47,7 @@ public class Table {
      * This method takes in a specified column and adds it into the Table.
      * It updates the schema and all the entries already part of the Table.
      * @param columnName the name of the column to be added.
-     * @param type the type of the column to be added.
+     * @param type the SQL type of the column to be added.
      */
     public String addColumn(String columnName, String type) throws InvalidTypeException, InvalidInputException {
         if (columnName.contains(" ")) {

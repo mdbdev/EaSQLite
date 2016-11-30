@@ -36,9 +36,12 @@ public class IntroActivity extends AppCompatActivity {
         if (EaSQLite.getTableNames() == null || EaSQLite.getTableNames().size() < 3) {
             try {
                 EaSQLite.createTable("nfl");
+                addColumns("nfl");
                 EaSQLite.createTable("nba");
+                addColumns("nba");
                 EaSQLite.createTable("nhl");
-            } catch (InvalidInputException e) {
+                addColumns("nhl");
+            } catch (InvalidInputException|InvalidTypeException e) {
                 new AlertDialog.Builder(IntroActivity.this)
                         .setTitle("Tables not Created")
                         .setPositiveButton("Close", new DialogInterface.OnClickListener() {
@@ -57,6 +60,13 @@ public class IntroActivity extends AppCompatActivity {
         setSpecificOnClickListener(nflBtn, "nfl");
         setSpecificOnClickListener(nbaBtn, "nba");
         setSpecificOnClickListener(nhlBtn, "nhl");
+    }
+
+    private void addColumns(String tableName) throws InvalidTypeException, InvalidInputException {
+        EaSQLite.addColumn(tableName, "name", EaSQLite.TEXT);
+        EaSQLite.addColumn(tableName, "age", EaSQLite.INTEGER);
+        EaSQLite.addColumn(tableName, "height", EaSQLite.REAL);
+        EaSQLite.addColumn(tableName, "team", EaSQLite.TEXT);
     }
 
     private void setSpecificOnClickListener(Button btn, final String league) {
