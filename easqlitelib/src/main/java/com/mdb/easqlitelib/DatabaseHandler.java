@@ -156,10 +156,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //Add entry to SQLite database
     public int addRow(String tableName, Pair<String, Object>[] entries) throws IOException {
+        System.out.println("adding row");
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         Table table = tableMap.get(tableName);
         if (table == null) return -1;
+        System.out.println("table found");
         List<Object> list = new ArrayList<>(entries.length);
         for (Pair<String, Object> p : entries) {
             cv.put(p.first, serialize(p.second));
@@ -167,14 +169,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             if (i < 0) return -1;
             list.add(i, p.second);
         }
+        System.out.println("created cvs");
         long id = db.insert(tableName, null, cv);
         if (id < 0) return -1;
+        System.out.println("inserted to db");
         Entry entry = new Entry(id, list, table);
         try {
             table.addEntry(entry);
         } catch (InvalidTypeException e) {
             return -1;
         }
+        System.out.println("entry added");
         return (int)id;
     }
 

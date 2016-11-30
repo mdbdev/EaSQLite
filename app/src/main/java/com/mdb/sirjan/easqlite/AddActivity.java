@@ -57,10 +57,12 @@ public class AddActivity extends AppCompatActivity {
                     }
 
                     try {
-                        EaSQLite.addRow(league, row);
+                        int succ = EaSQLite.addRow(league, row);
+                        if (succ == -1) throw new IOException();
                     } catch (IOException e) {
                         Toast.makeText(AddActivity.this, "Addition to DB failed", Toast.LENGTH_SHORT).show();
                     }
+                    Toast.makeText(AddActivity.this, "Addition to DB success", Toast.LENGTH_SHORT).show();
                 }
             });
         }

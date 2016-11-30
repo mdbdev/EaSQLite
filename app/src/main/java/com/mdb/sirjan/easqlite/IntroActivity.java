@@ -65,7 +65,7 @@ public class IntroActivity extends AppCompatActivity {
     private void addColumns(String tableName) throws InvalidTypeException, InvalidInputException {
         EaSQLite.addColumn(tableName, "name", EaSQLite.TEXT);
         EaSQLite.addColumn(tableName, "age", EaSQLite.INTEGER);
-        EaSQLite.addColumn(tableName, "height", EaSQLite.REAL);
+        EaSQLite.addColumn(tableName, "height", EaSQLite.INTEGER);
         EaSQLite.addColumn(tableName, "team", EaSQLite.TEXT);
     }
 
